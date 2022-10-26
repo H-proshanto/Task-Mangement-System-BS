@@ -22,7 +22,7 @@ export const Landing = ({ navigation }) => {
                     bodyStyle={styles.registrationContainer}
                     buttonStyle={styles.registrationBtn}
                     textStyle={styles.registrationText}
-                    onPress={() => navigation.navigate('registration')}
+                    onPress={() => navigation.navigate('Registration')}
                 />
             </View>
         </ScrollView>
@@ -31,7 +31,7 @@ export const Landing = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
+        flex: 1,
     },
     headerContainer: {
         height: hp('43%'),

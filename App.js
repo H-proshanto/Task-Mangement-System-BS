@@ -9,6 +9,7 @@ import { TopNavbar } from './src/components/TopNavbar';
 import { Landing } from './src/screens/Landing';
 import { SignUp } from './src/screens/SignUp';
 import { TaskForm } from './src/screens/TaskForm';
+import { TaskView } from './src/screens/TaskView';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,7 @@ export default function App() {
                             }}
                         />
                         <Stack.Screen name="TaskForm" component={TaskForm} />
+                        <Stack.Screen name="TaskView" component={TaskView} />
                         <Stack.Screen name="DashBoard" component={Tabs} />
                     </Stack.Navigator>
                 </NavigationContainer>

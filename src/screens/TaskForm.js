@@ -28,11 +28,7 @@ export const TaskForm = ({ navigation, route }) => {
         const errors = {};
 
         if (!values.title) {
-            errors.title = 'Email is required';
-        }
-
-        if (!values.description) {
-            errors.description = 'Password is required';
+            errors.title = 'Title is required';
         }
 
         return errors;

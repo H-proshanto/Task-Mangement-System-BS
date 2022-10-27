@@ -6,7 +6,7 @@ export const ItemView = ({ todoId, title, description, timeStamp, navigation }) 
         <View style={styles.todoConatainer}>
             <TouchableOpacity
                 style={styles.titleContainer}
-                onPress={() => console.log('single Todo er view dekhao')}
+                onPress={() => navigation.navigate('TaskView', { title, description })}
             >
                 <Text style={styles.taskText}>{title}</Text>
             </TouchableOpacity>

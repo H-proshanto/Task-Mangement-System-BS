@@ -1,9 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
-export const ButtonUI = ({ title, onPress, bodyStyle, buttonStyle, textStyle }) => {
-    const isLoading = false;
-
+export const ButtonUI = ({ title, onPress, bodyStyle, buttonStyle, textStyle, isLoading }) => {
     return (
         <View style={bodyStyle}>
             <TouchableOpacity disabled={isLoading} onPress={onPress}>

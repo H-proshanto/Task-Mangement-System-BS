@@ -1,10 +1,24 @@
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, resetUserStatus } from '../features/user';
 import { ButtonUI } from './ButtonUI';
 import { InputField } from './InputField';
 
-export const LoginForm = () => {
+export const LoginForm = ({ navigation }) => {
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (user.status === 'resolved') {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard' }],
+            });
+            dispatch(resetUserStatus());
+        }
+    });
     const validate = (values) => {
         const errors = {};
 
@@ -21,8 +35,8 @@ export const LoginForm = () => {
 
     return (
         <Formik
-            initialValues={{ email: '', password: '' }}
-            onSubmit={(values) => console.log('hello')}
+            initialValues={{ email: 'proshanto@email.com', password: '123456' }}
+            onSubmit={(values) => dispatch(login(values))}
             validate={validate}
         >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (

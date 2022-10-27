@@ -4,6 +4,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/app/store';
+import { TopNavbar } from './src/components/TopNavbar';
 import { DashBoard } from './src/screens/DashBoard';
 import { Landing } from './src/screens/Landing';
 import { SignUp } from './src/screens/SignUp';
@@ -30,7 +31,13 @@ export default function App() {
                                 headerShown: false,
                             }}
                         />
-                        <Stack.Screen name="DashBoard" component={DashBoard} />
+                        <Stack.Screen
+                            name="DashBoard"
+                            component={DashBoard}
+                            options={({ navigation }) => ({
+                                header: () => <TopNavbar navigation={navigation} />,
+                            })}
+                        />
                     </Stack.Navigator>
                 </NavigationContainer>
             </PersistGate>

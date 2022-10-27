@@ -4,8 +4,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/app/store';
+import { Tabs } from './src/components/Tabs';
 import { TopNavbar } from './src/components/TopNavbar';
-import { DashBoard } from './src/screens/DashBoard';
 import { Landing } from './src/screens/Landing';
 import { SignUp } from './src/screens/SignUp';
 
@@ -33,7 +33,7 @@ export default function App() {
                         />
                         <Stack.Screen
                             name="DashBoard"
-                            component={DashBoard}
+                            component={Tabs}
                             options={({ navigation }) => ({
                                 header: () => <TopNavbar navigation={navigation} />,
                             })}

@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllTasks } from '../features/task';
 
 export const DashBoard = ({ navigation }) => {
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getAllTasks(user));
+    });
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>

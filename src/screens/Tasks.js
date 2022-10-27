@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { TaskList } from '../components/TaskList';
 
 export const Tasks = ({ navigation }) => {
     return (
@@ -21,7 +22,7 @@ export const Tasks = ({ navigation }) => {
                         <Text style={styles.createButtonText}>Add new</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <TaskList /> */}
+                <TaskList navigation={navigation} />
             </View>
         </ScrollView>
     );

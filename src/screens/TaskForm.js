@@ -1,13 +1,18 @@
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
+import { addNewTask } from '../features/task';
 
 export const TaskForm = ({ navigation, route }) => {
+    const [memberId, setMemberId] = useState();
     const view = route.params?.view;
+    const token = useSelector((state) => state.user.token);
+    const dispatch = useDispatch();
     const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const validate = (values) => {
         const errors = {};
@@ -30,7 +35,16 @@ export const TaskForm = ({ navigation, route }) => {
             </View>
             <Formik
                 initialValues={{ title: '', description: '' }}
-                onSubmit={(values) => console.log('create koro')}
+                onSubmit={(values) =>
+                    dispatch(
+                        addNewTask({
+                            title: values.title,
+                            description: values.description,
+                            memberId,
+                            token,
+                        }),
+                    )
+                }
                 validate={validate}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -57,7 +71,7 @@ export const TaskForm = ({ navigation, route }) => {
                         ) : (
                             <></>
                         )}
-                        <DropDown />
+                        <DropDown memberId={memberId} setMemberId={setMemberId} />
                         <View style={styles.buttonContainer}>
                             <ButtonUI
                                 title="Submit"

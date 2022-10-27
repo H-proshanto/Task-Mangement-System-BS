@@ -13,8 +13,7 @@ const data = [
     { label: 'Item 8', value: '8' },
 ];
 
-export const DropDown = () => {
-    const [value, setValue] = useState(null);
+export const DropDown = ({ memberId, setMemberId }) => {
     const [isFocus, setIsFocus] = useState(false);
 
     return (
@@ -32,11 +31,11 @@ export const DropDown = () => {
                 valueField="value"
                 placeholder={!isFocus ? 'Assign to:' : '...'}
                 searchPlaceholder="Search..."
-                value={value}
+                value={memberId}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={(item) => {
-                    setValue(item.value);
+                    setMemberId(item.value);
                     setIsFocus(false);
                 }}
             />

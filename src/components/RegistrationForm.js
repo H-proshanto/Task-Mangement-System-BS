@@ -1,10 +1,25 @@
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { registration, resetUserStatus } from '../features/user';
 import { ButtonUI } from './ButtonUI';
 import { InputField } from './InputField';
 
-export const RegistrationForm = () => {
+export const RegistrationForm = ({ navigation }) => {
+    const requestStatus = useSelector((state) => state.user.status);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (requestStatus === 'resolved') {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard' }],
+            });
+            dispatch(resetUserStatus());
+        }
+    });
+
     const validate = (values) => {
         const errors = {};
 
@@ -30,7 +45,7 @@ export const RegistrationForm = () => {
     return (
         <Formik
             initialValues={{ name: '', email: '', password: '', password2: '' }}
-            onSubmit={(values) => console.log('hello')}
+            onSubmit={(values) => dispatch(registration(values))}
             validate={validate}
         >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (

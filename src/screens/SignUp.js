@@ -4,14 +4,14 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { RegistrationForm } from '../components/RegistrationForm';
 
-export const SignUp = () => {
+export const SignUp = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
                 <Image style={styles.headerlogo} source={require('../assets/logo.png')} />
                 <Text style={styles.headertext}> Registration </Text>
             </View>
-            <RegistrationForm />
+            <RegistrationForm navigation={navigation} />
         </ScrollView>
     );
 };

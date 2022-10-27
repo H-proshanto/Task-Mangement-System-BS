@@ -8,10 +8,10 @@ import { InputField } from './InputField';
 
 export const LoginForm = ({ navigation }) => {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user);
+    const requestStatus = useSelector((state) => state.user.status);
 
     useEffect(() => {
-        if (user.status === 'resolved') {
+        if (requestStatus === 'resolved') {
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'DashBoard' }],

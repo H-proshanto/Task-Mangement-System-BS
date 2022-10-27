@@ -31,6 +31,25 @@ export const login = createAsyncThunk('user/login', async (params) => {
     return response.data;
 });
 
+export const registration = createAsyncThunk('user/registration', async (params) => {
+    const apiSubDirectory = 'register';
+    const apiDirectory = 'public';
+    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/`;
+    const response = await axios({
+        method: 'POST',
+        url,
+        headers: { 'Content-Type': 'application/json' },
+        data: {
+            name: params.name,
+            email: params.email,
+            password: params.password,
+            password2: params.password2,
+        },
+    });
+
+    return response.data;
+});
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -53,6 +72,23 @@ export const userSlice = createSlice({
                 state.status = 'resolved';
             })
             .addCase(login.rejected, (state, action) => {
+                state.info = {};
+                state.error = action.error?.message;
+                state.isLoggedIn = false;
+                state.status = 'error';
+                state.token = null;
+            })
+            .addCase(registration.pending, (state) => {
+                state.status = 'running';
+            })
+            .addCase(registration.fulfilled, (state, action) => {
+                state.info = action.payload.user;
+                state.token = action.payload.token;
+                state.error = '';
+                state.isLoggedIn = true;
+                state.status = 'resolved';
+            })
+            .addCase(registration.rejected, (state, action) => {
                 state.info = {};
                 state.error = action.error?.message;
                 state.isLoggedIn = false;

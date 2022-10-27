@@ -20,6 +20,19 @@ export const getAllTasks = createAsyncThunk('task/getAllTasks', async (params) =
 
     return response.data;
 });
+export const getSingleTask = async (params) => {
+    const apiSubDirectory = 'tasks';
+    const apiDirectory = 'private';
+    console.log(params);
+    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/${params.todoId}`;
+    const response = await axios({
+        method: 'GET',
+        url,
+        headers: { Authorization: `Bearer ${params.token}` },
+    });
+
+    return response.data;
+};
 
 export const addNewTask = createAsyncThunk('task/addNewTask', async (params) => {
     const apiSubDirectory = 'tasks';
@@ -35,6 +48,24 @@ export const addNewTask = createAsyncThunk('task/addNewTask', async (params) => 
             memberId: 2,
         },
     });
+});
+
+export const updateTask = createAsyncThunk('task/updateTask', async (params) => {
+    const apiSubDirectory = 'tasks';
+    const apiDirectory = 'private';
+    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/${params.taskId}`;
+    const response = await axios({
+        method: 'PATCH',
+        url,
+        headers: { Authorization: `Bearer ${params.token}`, 'Content-Type': 'application/json' },
+        data: {
+            title: params.title,
+            description: params.description,
+            // memberId: 2,
+        },
+    });
+
+    console.log(response.data);
 });
 
 export const taskSlice = createSlice({

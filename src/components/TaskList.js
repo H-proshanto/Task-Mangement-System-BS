@@ -1,13 +1,20 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { TodoView } from './TodoView';
+import { ItemView } from './ItemView';
 
 export const TaskList = ({ navigation }) => {
-    const { taskList } = useSelector((state) => state.task);
-    console.log(taskList);
+    const taskList = useSelector((state) => state.task.taskList.tasks);
 
-    const renderItem = ({ item }) => <TodoView todo={item} navigation={navigation} />;
+    const renderItem = ({ item }) => (
+        <ItemView
+            todoId={item.id}
+            title={item.title}
+            description={item.description}
+            timeStamp={item.createdAt}
+            navigation={navigation}
+        />
+    );
 
     return (
         <View style={styles.listContainer}>

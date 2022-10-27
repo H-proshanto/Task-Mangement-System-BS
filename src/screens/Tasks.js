@@ -1,30 +1,31 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import { TaskList } from '../components/TaskList';
 
 export const Tasks = ({ navigation }) => {
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerText}>All Tasks</Text>
-                <Text style={styles.headerDescription}>You will find all your tasks here.</Text>
-            </View>
-            <View style={styles.bodyContainer}>
-                <Text style={styles.bodyTitle}>Here are all tasks:</Text>
-                <View style={styles.createButtonContainer}>
-                    <TouchableOpacity
-                        style={styles.createButton}
-                        onPress={() => {
-                            navigation.navigate('TaskForm', { view: 'create' });
-                        }}
-                    >
-                        <Text style={styles.createButtonText}>Add new</Text>
-                    </TouchableOpacity>
+        <>
+            <View style={styles.container}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>All Tasks</Text>
+                    <Text style={styles.headerDescription}>You will find all your tasks here.</Text>
+                </View>
+                <View style={styles.bodyContainer}>
+                    <Text style={styles.bodyTitle}>Here are all tasks:</Text>
+                    <View style={styles.createButtonContainer}>
+                        <TouchableOpacity
+                            style={styles.createButton}
+                            onPress={() => {
+                                navigation.navigate('TaskForm', { view: 'create' });
+                            }}
+                        >
+                            <Text style={styles.createButtonText}>Add new</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <TaskList navigation={navigation} />
             </View>
-        </ScrollView>
+        </>
     );
 };
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     headerContainer: {
-        flex: 0.3,
+        flex: 0.2,
         padding: 7,
     },
     headerText: {
@@ -47,9 +48,9 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
     bodyContainer: {
-        flex: 0.3,
+        flex: 0.1,
         flexDirection: 'row',
-        marginTop: 15,
+        // marginTop: 10,
     },
     bodyTitle: {
         fontWeight: 'bold',
@@ -58,7 +59,6 @@ const styles = StyleSheet.create({
     },
     createButtonContainer: {
         flex: 1,
-        alignSelf: 'center',
         justifyContent: 'flex-end',
         flexDirection: 'row',
     },

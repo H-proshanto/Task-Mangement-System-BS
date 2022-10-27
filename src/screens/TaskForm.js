@@ -6,11 +6,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { addNewTask } from '../features/task';
+import { addNewTask, updateTask } from '../features/task';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
     const view = route.params?.view;
+    const title = route.params?.title;
+    const description = route.params?.description;
+    const taskId = route.params?.todoId;
+    const onPress = () => {
+        if (view === 'create') {
+            return addNewTask;
+        } else {
+            return updateTask;
+        }
+    };
     const token = useSelector((state) => state.user.token);
     const dispatch = useDispatch();
     const headerTitle = view === 'create' ? 'Add task' : 'Update task';
@@ -34,14 +44,15 @@ export const TaskForm = ({ navigation, route }) => {
                 <Text style={styles.headerText}>{headerTitle}</Text>
             </View>
             <Formik
-                initialValues={{ title: '', description: '' }}
+                initialValues={{ title: title || '', description: description || '' }}
                 onSubmit={(values) =>
                     dispatch(
-                        addNewTask({
+                        onPress()({
                             title: values.title,
                             description: values.description,
                             memberId,
                             token,
+                            taskId,
                         }),
                     )
                 }

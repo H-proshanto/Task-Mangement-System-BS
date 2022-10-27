@@ -8,6 +8,7 @@ import { Tabs } from './src/components/Tabs';
 import { TopNavbar } from './src/components/TopNavbar';
 import { Landing } from './src/screens/Landing';
 import { SignUp } from './src/screens/SignUp';
+import { TaskForm } from './src/screens/TaskForm';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,12 @@ export default function App() {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Landing">
+                    <Stack.Navigator
+                        initialRouteName="Landing"
+                        screenOptions={({ navigation }) => ({
+                            header: () => <TopNavbar navigation={navigation} />,
+                        })}
+                    >
                         <Stack.Screen
                             name="Landing"
                             component={Landing}
@@ -31,13 +37,8 @@ export default function App() {
                                 headerShown: false,
                             }}
                         />
-                        <Stack.Screen
-                            name="DashBoard"
-                            component={Tabs}
-                            options={({ navigation }) => ({
-                                header: () => <TopNavbar navigation={navigation} />,
-                            })}
-                        />
+                        <Stack.Screen name="TaskForm" component={TaskForm} />
+                        <Stack.Screen name="DashBoard" component={Tabs} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </PersistGate>

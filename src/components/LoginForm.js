@@ -69,6 +69,9 @@ export const LoginForm = ({ navigation }) => {
                         buttonStyle={styles.loginButton}
                         textStyle={styles.loginText}
                         onPress={handleSubmit}
+                        isLoading={requestStatus === 'running'}
+                        loaderStyle={styles.loaderStyle}
+                        loaderSize={20}
                     />
                 </View>
             )}
@@ -104,5 +107,11 @@ const styles = StyleSheet.create({
         padding: 5,
         textAlign: 'center',
         alignSelf: 'center',
+    },
+    loaderStyle: {
+        paddingTop: 6,
+        paddingBottom: 5,
+        paddingLeft: 16,
+        paddingRight: 16,
     },
 });

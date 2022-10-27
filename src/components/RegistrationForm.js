@@ -89,7 +89,7 @@ export const RegistrationForm = ({ navigation }) => {
                         onBlur={handleBlur('password2')}
                         placeholder="Retype Password"
                     />
-                    {errors.password2 ? (
+                    {errors.password2 && touched.password2 ? (
                         <Text style={styles.errorMessage}>{errors.password2}</Text>
                     ) : (
                         <></>

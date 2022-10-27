@@ -1,7 +1,14 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../features/user';
 
 export const TopNavbar = ({ navigation }) => {
+    const username = useSelector((state) => state.user.info.name);
+    const dispatch = useDispatch();
+    const clearAllData = () => {
+        setTimeout(() => dispatch(logout()), 100);
+    };
     return (
         <View style={styles.navContainer}>
             <View style={styles.logoContainer}>
@@ -11,8 +18,16 @@ export const TopNavbar = ({ navigation }) => {
                 <Text style={styles.text}>Task Management</Text>
             </View>
             <View style={styles.profileContainer}>
-                <Text style={styles.username}>{'Mr.pro'}</Text>
-                <TouchableOpacity onPress={() => console.log('hello logout koren')}>
+                <Text style={styles.username}>{username}</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Landing' }],
+                        });
+                        clearAllData();
+                    }}
+                >
                     <Image style={styles.logout} source={require('../assets/logout-icon.png')} />
                 </TouchableOpacity>
             </View>
@@ -27,7 +42,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     username: {
-        fontWeight: 'bold',
+        fontWeight: '300',
         fontSize: 20,
         alignSelf: 'center',
         color: 'white',

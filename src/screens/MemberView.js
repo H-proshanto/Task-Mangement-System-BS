@@ -3,13 +3,13 @@ import { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
-import { deleteTask, resetTaskStatus } from '../features/task';
+import { deleteMember, resetMemberStatus } from '../features/member';
 
-export const TaskView = ({ navigation, route }) => {
+export const MemberView = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
-    const requestStatus = useSelector((state) => state.task.status);
-    const { title, description, todoId, memberName, memberId } = route.params;
+    const requestStatus = useSelector((state) => state.member.status);
+    const { memberName, memberId } = route.params;
 
     const confimationWindow = () => {
         Alert.alert('Are you sure you want to delete this task', '', [
@@ -17,7 +17,7 @@ export const TaskView = ({ navigation, route }) => {
                 text: 'Confirm',
                 style: 'destructive',
                 onPress: () => {
-                    dispatch(deleteTask({ token, taskId: todoId }));
+                    dispatch(deleteMember({ token, memberId }));
                 },
             },
             {
@@ -32,23 +32,19 @@ export const TaskView = ({ navigation, route }) => {
                 index: 0,
                 routes: [{ name: 'DashBoard' }],
             });
-            dispatch(resetTaskStatus());
+            dispatch(resetMemberStatus());
         }
     }, [requestStatus]);
 
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>Title</Text>
-                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.titleText}>Name</Text>
+                <Text style={styles.title}>{memberName}</Text>
             </View>
-            <View style={styles.descriptionContainer}>
-                <Text style={styles.descriptionText}>Description</Text>
-                <Text style={styles.description}>{description}</Text>
-            </View>
-            <View style={styles.memberContainer}>
-                <Text style={styles.memberText}>Assigned to :</Text>
-                <Text style={styles.member}>{memberName}</Text>
+            <View style={styles.TaskContainer}>
+                <Text style={styles.TaskText}>Tasks :</Text>
+                <Text style={styles.member}>Tasks</Text>
             </View>
             <View style={styles.buttonContainer}>
                 <ButtonUI
@@ -57,10 +53,8 @@ export const TaskView = ({ navigation, route }) => {
                     buttonStyle={styles.editButton}
                     textStyle={styles.editText}
                     onPress={() => {
-                        navigation.navigate('TaskForm', {
-                            title,
-                            description,
-                            todoId,
+                        navigation.navigate('MemberForm', {
+                            memberName,
                             memberId,
                             view: 'update',
                         });
@@ -121,11 +115,11 @@ const styles = StyleSheet.create({
         fontSize: 21,
         fontStyle: 'italic',
     },
-    memberContainer: {
+    TaskContainer: {
         flex: 0.2,
         padding: 7,
     },
-    memberText: {
+    TaskText: {
         fontWeight: 'bold',
         fontSize: 22,
         marginLeft: 15,

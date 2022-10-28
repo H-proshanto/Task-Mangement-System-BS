@@ -1,44 +1,21 @@
 import { Formik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
-import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { addNewTask, updateTask } from '../features/task';
+import { addNewMember, updateMember } from '../features/member';
 
-export const TaskForm = ({ navigation, route }) => {
-    const [memberId, setMemberId] = useState();
+export const MemberForm = ({ navigation, route }) => {
     const view = route.params?.view;
-    const title = route.params?.title;
-    const description = route.params?.description;
-    const taskId = route.params?.todoId;
+    const memberName = route.params?.memberName;
+    const memberId = route.params?.memberId;
     const token = useSelector((state) => state.user.token);
     const dispatch = useDispatch();
-    const requestStatus = useSelector((state) => state.task.status);
-    const headerTitle = view === 'create' ? 'Add task' : 'Update task';
-    const onPress = () => {
-        if (view === 'create') {
-            return addNewTask;
-        } else {
-            return updateTask;
-        }
-    };
-    const validate = (values) => {
-        const errors = {};
-
-        if (!values.title) {
-            errors.title = 'Title is required';
-        }
-
-        return errors;
-    };
-
-    useEffect(() => {
-        setMemberId(route.params?.memberId);
-    }, []);
+    const requestStatus = useSelector((state) => state.member.status);
+    const headerTitle = view === 'create' ? 'Add member' : 'Update member';
 
     useEffect(() => {
         if (requestStatus === 'resolved') {
@@ -49,22 +26,38 @@ export const TaskForm = ({ navigation, route }) => {
         }
     });
 
+    const validate = (values) => {
+        const errors = {};
+
+        if (!values.memberName) {
+            errors.memberName = 'Name is required';
+        }
+
+        return errors;
+    };
+
+    const onPress = () => {
+        if (view === 'create') {
+            return addNewMember;
+        } else {
+            return updateMember;
+        }
+    };
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>{headerTitle}</Text>
             </View>
             <Formik
-                initialValues={{ title: title || '', description: description || '' }}
+                initialValues={{ memberName: memberName || '' }}
                 onSubmit={(values) =>
                     dispatch(
                         onPress()({
-                            title: values.title,
-                            description: values.description,
-                            memberId,
                             token,
-                            taskId,
-                        })
+                            memberName: values.memberName,
+                            memberId,
+                        }),
                     )
                 }
                 validate={validate}
@@ -72,28 +65,16 @@ export const TaskForm = ({ navigation, route }) => {
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                     <View style={styles.formContainer}>
                         <InputField
-                            text={values.title}
-                            setter={handleChange('title')}
-                            onBlur={handleBlur('title')}
-                            placeholder="Title"
+                            text={values.memberName}
+                            setter={handleChange('memberName')}
+                            onBlur={handleBlur('memberName')}
+                            placeholder="Name"
                         />
-                        {errors.title && touched.title ? (
-                            <Text style={styles.errorMessage}>{errors.title}</Text>
+                        {errors.memberName && touched.memberName ? (
+                            <Text style={styles.errorMessage}>{errors.memberName}</Text>
                         ) : (
                             <></>
                         )}
-                        <InputField
-                            text={values.description}
-                            setter={handleChange('description')}
-                            onBlur={handleBlur('description')}
-                            placeholder="Description"
-                        />
-                        {errors.description && touched.description ? (
-                            <Text style={styles.errorMessage}>{errors.description}</Text>
-                        ) : (
-                            <></>
-                        )}
-                        <DropDown memberId={memberId} setMemberId={setMemberId} />
                         <View style={styles.buttonContainer}>
                             <ButtonUI
                                 title="Submit"

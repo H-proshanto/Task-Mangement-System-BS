@@ -38,7 +38,6 @@ export const addNewTask = createAsyncThunk('task/addNewTask', async (params) => 
     const apiSubDirectory = 'tasks';
     const apiDirectory = 'private';
     const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/`;
-    console.log(params);
     await axios({
         method: 'POST',
         url,
@@ -46,7 +45,7 @@ export const addNewTask = createAsyncThunk('task/addNewTask', async (params) => 
         data: {
             title: params.title,
             description: params.description,
-            memberId: 1,
+            memberId: params.memberId,
         },
     });
 });
@@ -62,10 +61,9 @@ export const updateTask = createAsyncThunk('task/updateTask', async (params) => 
         data: {
             title: params.title,
             description: params.description,
-            // memberId: 2,
+            memberId: params.memberId,
         },
     });
-
 });
 
 export const deleteTask = createAsyncThunk('task/deleteTask', async (params) => {
@@ -78,7 +76,6 @@ export const deleteTask = createAsyncThunk('task/deleteTask', async (params) => 
         headers: { Authorization: `Bearer ${params.token}` },
     });
 });
-
 
 export const taskSlice = createSlice({
     name: 'task',
@@ -135,8 +132,7 @@ export const taskSlice = createSlice({
             .addCase(deleteTask.rejected, (state, action) => {
                 state.error = action.error?.message;
                 state.status = 'error';
-            })
-
+            });
     },
 });
 

@@ -1,40 +1,27 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export const ItemView = ({
-    todoId,
-    title,
-    description,
-    timeStamp,
-    navigation,
-    memberName,
-    memberId,
-}) => {
+export const MemberItemView = ({ memberId, memberName, memberTasks, navigation }) => {
     return (
         <View style={styles.todoConatainer}>
             <TouchableOpacity
                 style={styles.titleContainer}
                 onPress={() =>
-                    navigation.navigate('TaskView', {
-                        todoId,
-                        title,
-                        description,
+                    navigation.navigate('MemberView', {
                         memberName,
                         memberId,
                     })
                 }
             >
-                <Text style={styles.taskText}>{title}</Text>
+                <Text style={styles.taskText}>{memberName}</Text>
             </TouchableOpacity>
-            <Text style={styles.timeStamp}>{timeStamp.slice(0, 10)}</Text>
+            <Text style={styles.taskCount}>{`Tasks: ${memberTasks}`}</Text>
 
             <TouchableOpacity
                 style={styles.updateBtn}
                 onPress={() => {
-                    navigation.navigate('TaskForm', {
-                        title,
-                        description,
-                        todoId,
+                    navigation.navigate('MemberForm', {
+                        memberName,
                         memberId,
                         view: 'update',
                     });
@@ -68,9 +55,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
     },
-    timeStamp: {
+    taskCount: {
         alignSelf: 'center',
-        fontSize: 10,
+        fontSize: 13,
         color: 'grey',
         fontStyle: 'italic',
         marginRight: 7,

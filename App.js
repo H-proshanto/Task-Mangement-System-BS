@@ -7,6 +7,8 @@ import { persistor, store } from './src/app/store';
 import { Tabs } from './src/components/Tabs';
 import { TopNavbar } from './src/components/TopNavbar';
 import { Landing } from './src/screens/Landing';
+import { MemberForm } from './src/screens/MemberForm';
+import { MemberView } from './src/screens/MemberView';
 import { SignUp } from './src/screens/SignUp';
 import { TaskForm } from './src/screens/TaskForm';
 import { TaskView } from './src/screens/TaskView';
@@ -40,6 +42,8 @@ export default function App() {
                         />
                         <Stack.Screen name="TaskForm" component={TaskForm} />
                         <Stack.Screen name="TaskView" component={TaskView} />
+                        <Stack.Screen name="MemberView" component={MemberView} />
+                        <Stack.Screen name="MemberForm" component={MemberForm} />
                         <Stack.Screen name="DashBoard" component={Tabs} />
                     </Stack.Navigator>
                 </NavigationContainer>

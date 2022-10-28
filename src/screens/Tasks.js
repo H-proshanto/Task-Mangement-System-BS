@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     bodyContainer: {
         flex: 0.1,
         flexDirection: 'row',
-        // marginTop: 10,
     },
     bodyTitle: {
         fontWeight: 'bold',

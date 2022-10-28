@@ -5,6 +5,7 @@ import persistStore from 'redux-persist/es/persistStore';
 import thunk from 'redux-thunk';
 import taskReducer from '../features/task';
 import userReducer from '../features/user';
+import memberReducer from '../features/member';
 
 const persistConfig = {
     key: 'root',
@@ -14,6 +15,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     user: userReducer,
     task: taskReducer,
+    member: memberReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

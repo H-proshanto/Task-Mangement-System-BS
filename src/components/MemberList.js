@@ -4,25 +4,23 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllTasks } from '../features/task';
 import { ItemView } from './ItemView';
+import { MemberItemView } from './MemberItemView';
 
-export const TaskList = ({ navigation }) => {
-    const taskList = useSelector((state) => state.task.taskList.tasks);
+export const MemberList = ({ navigation }) => {
+    const memberList = useSelector((state) => state.member.membersList);
 
     const renderItem = ({ item }) => (
-        <ItemView
-            todoId={item.id}
-            title={item.title}
-            description={item.description}
-            timeStamp={item.createdAt}
+        <MemberItemView
+            memberId={item.id}
+            memberName={item.name}
+            memberTasks={item.taskCount}
             navigation={navigation}
-            memberName={item.Member.name}
-            memberId={item.Member.id}
         />
     );
 
     return (
         <View style={styles.listContainer}>
-            <FlatList data={taskList} renderItem={renderItem} />
+            <FlatList data={memberList} renderItem={renderItem} />
         </View>
     );
 };

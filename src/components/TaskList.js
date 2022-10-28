@@ -15,8 +15,8 @@ export const TaskList = ({ navigation }) => {
             description={item.description}
             timeStamp={item.createdAt}
             navigation={navigation}
-            memberName={item.Member.name}
-            memberId={item.Member.id}
+            memberName={item.Member?.name}
+            memberId={item.Member?.id}
         />
     );
 

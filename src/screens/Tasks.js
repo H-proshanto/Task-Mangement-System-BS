@@ -1,8 +1,25 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
+import { getAllTasks, resetTaskStatus } from '../features/task';
 
 export const Tasks = ({ navigation }) => {
+    const user = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const requestStatus = useSelector((state) => state.task.status);
+
+    useEffect(() => {
+        dispatch(getAllTasks(user));
+    }, []);
+
+    useEffect(() => {
+        if (requestStatus === 'resolved') {
+            dispatch(resetTaskStatus());
+        }
+    }, [requestStatus]);
+
     return (
         <>
             <View style={styles.container}>

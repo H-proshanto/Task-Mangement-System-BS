@@ -69,7 +69,7 @@ export const LoginForm = ({ navigation }) => {
                         buttonStyle={styles.loginButton}
                         textStyle={styles.loginText}
                         onPress={handleSubmit}
-                        isLoading={requestStatus === 'running'}
+                        isLoading={requestStatus !== 'idle'}
                         loaderStyle={styles.loaderStyle}
                         loaderSize={20}
                     />

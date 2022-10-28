@@ -1,12 +1,13 @@
 import { Formik } from 'formik';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { addNewTask, updateTask } from '../features/task';
+import { addNewTask, resetTasks, resetTaskStatus, updateTask } from '../features/task';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
@@ -14,6 +15,10 @@ export const TaskForm = ({ navigation, route }) => {
     const title = route.params?.title;
     const description = route.params?.description;
     const taskId = route.params?.todoId;
+    const token = useSelector((state) => state.user.token);
+    const dispatch = useDispatch();
+    const requestStatus = useSelector((state) => state.task.status);
+    const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const onPress = () => {
         if (view === 'create') {
             return addNewTask;
@@ -21,9 +26,6 @@ export const TaskForm = ({ navigation, route }) => {
             return updateTask;
         }
     };
-    const token = useSelector((state) => state.user.token);
-    const dispatch = useDispatch();
-    const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const validate = (values) => {
         const errors = {};
 
@@ -33,6 +35,16 @@ export const TaskForm = ({ navigation, route }) => {
 
         return errors;
     };
+
+    useEffect(() => {
+        if (requestStatus === 'resolved') {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard' }],
+
+            });
+        }
+    });
 
     return (
         <ScrollView style={styles.container}>
@@ -49,7 +61,7 @@ export const TaskForm = ({ navigation, route }) => {
                             memberId,
                             token,
                             taskId,
-                        }),
+                        })
                     )
                 }
                 validate={validate}
@@ -86,6 +98,9 @@ export const TaskForm = ({ navigation, route }) => {
                                 buttonStyle={styles.button}
                                 textStyle={styles.buttonText}
                                 onPress={handleSubmit}
+                                isLoading={requestStatus !== 'idle'}
+                                loaderSize={20}
+                                loaderStyle={styles.loaderStyle}
                             />
                         </View>
                     </View>
@@ -169,5 +184,11 @@ const styles = StyleSheet.create({
         padding: 14,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    loaderStyle: {
+        paddingTop: 6,
+        paddingBottom: 5,
+        paddingLeft: 16,
+        paddingRight: 16,
     },
 });

@@ -1,6 +1,8 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllTasks } from '../features/task';
 import { ItemView } from './ItemView';
 
 export const TaskList = ({ navigation }) => {
@@ -13,6 +15,7 @@ export const TaskList = ({ navigation }) => {
             description={item.description}
             timeStamp={item.createdAt}
             navigation={navigation}
+            memberName={item.Member.name}
         />
     );
 

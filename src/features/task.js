@@ -38,6 +38,7 @@ export const addNewTask = createAsyncThunk('task/addNewTask', async (params) => 
     const apiSubDirectory = 'tasks';
     const apiDirectory = 'private';
     const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/`;
+    console.log(params);
     await axios({
         method: 'POST',
         url,
@@ -45,7 +46,7 @@ export const addNewTask = createAsyncThunk('task/addNewTask', async (params) => 
         data: {
             title: params.title,
             description: params.description,
-            memberId: 2,
+            memberId: 1,
         },
     });
 });
@@ -54,7 +55,7 @@ export const updateTask = createAsyncThunk('task/updateTask', async (params) => 
     const apiSubDirectory = 'tasks';
     const apiDirectory = 'private';
     const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/${params.taskId}`;
-    const response = await axios({
+    await axios({
         method: 'PATCH',
         url,
         headers: { Authorization: `Bearer ${params.token}`, 'Content-Type': 'application/json' },
@@ -65,8 +66,19 @@ export const updateTask = createAsyncThunk('task/updateTask', async (params) => 
         },
     });
 
-    console.log(response.data);
 });
+
+export const deleteTask = createAsyncThunk('task/deleteTask', async (params) => {
+    const apiSubDirectory = 'tasks';
+    const apiDirectory = 'private';
+    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/${params.taskId}`;
+    await axios({
+        method: 'DELETE',
+        url,
+        headers: { Authorization: `Bearer ${params.token}` },
+    });
+});
+
 
 export const taskSlice = createSlice({
     name: 'task',
@@ -99,10 +111,32 @@ export const taskSlice = createSlice({
                 state.status = 'resolved';
             })
             .addCase(addNewTask.rejected, (state, action) => {
-                console.log(action.error.message);
                 state.error = action.error?.message;
                 state.status = 'error';
-            });
+            })
+            .addCase(updateTask.pending, (state) => {
+                state.status = 'running';
+            })
+            .addCase(updateTask.fulfilled, (state) => {
+                state.error = '';
+                state.status = 'resolved';
+            })
+            .addCase(updateTask.rejected, (state, action) => {
+                state.error = action.error?.message;
+                state.status = 'error';
+            })
+            .addCase(deleteTask.pending, (state) => {
+                state.status = 'running';
+            })
+            .addCase(deleteTask.fulfilled, (state) => {
+                state.error = '';
+                state.status = 'resolved';
+            })
+            .addCase(deleteTask.rejected, (state, action) => {
+                state.error = action.error?.message;
+                state.status = 'error';
+            })
+
     },
 });
 

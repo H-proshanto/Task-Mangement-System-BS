@@ -1,12 +1,14 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export const ItemView = ({ todoId, title, description, timeStamp, navigation }) => {
+export const ItemView = ({ todoId, title, description, timeStamp, navigation, memberName }) => {
     return (
         <View style={styles.todoConatainer}>
             <TouchableOpacity
                 style={styles.titleContainer}
-                onPress={() => navigation.navigate('TaskView', { title, description })}
+                onPress={() =>
+                    navigation.navigate('TaskView', { todoId, title, description, memberName, route: 'Tasks' })
+                }
             >
                 <Text style={styles.taskText}>{title}</Text>
             </TouchableOpacity>

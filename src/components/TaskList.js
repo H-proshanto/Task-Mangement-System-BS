@@ -1,13 +1,9 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllTasks } from '../features/task';
+import { useSelector } from 'react-redux';
 import { ItemView } from './ItemView';
 
-export const TaskList = ({ navigation }) => {
-    const taskList = useSelector((state) => state.task.taskList.tasks);
-
+export const TaskList = ({ navigation, data }) => {
     const renderItem = ({ item }) => (
         <ItemView
             todoId={item.id}
@@ -22,7 +18,7 @@ export const TaskList = ({ navigation }) => {
 
     return (
         <View style={styles.listContainer}>
-            <FlatList data={taskList} renderItem={renderItem} />
+            <FlatList data={data} renderItem={renderItem} />
         </View>
     );
 };

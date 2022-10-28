@@ -6,6 +6,7 @@ import { TaskList } from '../components/TaskList';
 import { getAllTasks, resetTaskStatus } from '../features/task';
 
 export const Tasks = ({ navigation }) => {
+    const taskList = useSelector((state) => state.task.taskList.tasks);
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const requestStatus = useSelector((state) => state.task.status);
@@ -40,7 +41,7 @@ export const Tasks = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <TaskList navigation={navigation} />
+                <TaskList navigation={navigation} data={taskList} />
             </View>
         </>
     );

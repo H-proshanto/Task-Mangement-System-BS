@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { addNewTask, updateTask } from '../features/task';
+import { addNewTask, resetTaskStatus, updateTask } from '../features/task';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
@@ -42,10 +42,11 @@ export const TaskForm = ({ navigation, route }) => {
 
     useEffect(() => {
         if (requestStatus === 'resolved') {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'DashBoard' }],
-            });
+            // navigation.reset({
+            //     index: 0,
+            //     routes: [{ name: 'DashBoard' }],
+            // });
+            dispatch(resetTaskStatus());
         }
     });
 
@@ -102,7 +103,7 @@ export const TaskForm = ({ navigation, route }) => {
                                 textStyle={styles.buttonText}
                                 onPress={handleSubmit}
                                 isLoading={requestStatus !== 'idle'}
-                                loaderSize={20}
+                                loaderSize={30}
                                 loaderStyle={styles.loaderStyle}
                             />
                         </View>
@@ -189,9 +190,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     loaderStyle: {
-        paddingTop: 6,
-        paddingBottom: 5,
-        paddingLeft: 16,
-        paddingRight: 16,
+        paddingTop: 7,
+        paddingBottom: 7,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
 });

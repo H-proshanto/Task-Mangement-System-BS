@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     loaderStyle: {
-        paddingLeft: 9,
-        paddingRight: 9,
+        paddingLeft: 11,
+        paddingRight: 11,
     },
     buttonContainer: {
         flex: 0.4,

@@ -77,7 +77,7 @@ export const TaskView = ({ navigation, route }) => {
                     onPress={confimationWindow}
                     isLoading={requestStatus !== 'idle'}
                     loaderStyle={styles.loaderStyle}
-                    loaderSize={32}
+                    loaderSize={31}
                 />
             </View>
         </View>
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     loaderStyle: {
-        paddingLeft: 9,
-        paddingRight: 9,
+        paddingLeft: 11,
+        paddingRight: 11,
     },
     buttonContainer: {
         flex: 0.4,

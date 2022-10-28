@@ -170,9 +170,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     loaderStyle: {
-        paddingTop: 6,
-        paddingBottom: 5,
-        paddingLeft: 16,
-        paddingRight: 16,
+        paddingTop: 7,
+        paddingBottom: 7,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
 });

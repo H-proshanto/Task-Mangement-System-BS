@@ -5,11 +5,8 @@ import {
     heightPercentageToDP as hp,
     widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { useDispatch } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { LoginForm } from '../components/LoginForm';
-import { resetTaskStatus } from '../features/task';
-import { resetUserStatus } from '../features/user';
 
 export const Landing = ({ navigation }) => {
     return (

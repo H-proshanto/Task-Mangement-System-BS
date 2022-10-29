@@ -3,9 +3,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
 import thunk from 'redux-thunk';
+import memberReducer from '../features/member';
 import taskReducer from '../features/task';
 import userReducer from '../features/user';
-import memberReducer from '../features/member';
 
 const persistConfig = {
     key: 'root',

@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { ItemView } from './ItemView';
 
 export const TaskList = ({ navigation, data }) => {

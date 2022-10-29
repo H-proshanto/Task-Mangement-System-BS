@@ -1,8 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useEffect } from 'react';
-import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllTasks, resetTaskStatus } from '../features/task';
+import React from 'react';
 import { DashBoard } from '../screens/DashBoard';
 import { Members } from '../screens/Members';
 import { Tasks } from '../screens/Tasks';

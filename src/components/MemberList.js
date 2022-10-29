@@ -1,9 +1,6 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllTasks } from '../features/task';
-import { ItemView } from './ItemView';
+import { useSelector } from 'react-redux';
 import { MemberItemView } from './MemberItemView';
 
 export const MemberList = ({ navigation }) => {

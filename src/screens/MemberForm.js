@@ -1,6 +1,5 @@
 import { Formik } from 'formik';
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,7 +56,7 @@ export const MemberForm = ({ navigation, route }) => {
                             token,
                             memberName: values.memberName,
                             memberId,
-                        }),
+                        })
                     )
                 }
                 validate={validate}

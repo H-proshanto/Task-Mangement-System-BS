@@ -50,6 +50,22 @@ export const registration = createAsyncThunk('user/registration', async (params)
     return response.data;
 });
 
+const errorParser = (errorMessage) => {
+    if (errorMessage.includes('400')) {
+        return 'User not found';
+    }
+
+    if (errorMessage.includes('401')) {
+        return 'Incorrect Password';
+    }
+
+    if (errorMessage.includes('403')) {
+        return 'Email already exists';
+    }
+
+    return 'Unexpected error';
+};
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -73,7 +89,7 @@ export const userSlice = createSlice({
             })
             .addCase(login.rejected, (state, action) => {
                 state.info = {};
-                state.error = action.error?.message;
+                state.error = errorParser(action.error?.message);
                 state.isLoggedIn = false;
                 state.status = 'error';
                 state.token = null;
@@ -90,7 +106,7 @@ export const userSlice = createSlice({
             })
             .addCase(registration.rejected, (state, action) => {
                 state.info = {};
-                state.error = action.error?.message;
+                state.error = errorParser(action.error?.message);
                 state.isLoggedIn = false;
                 state.status = 'error';
                 state.token = null;

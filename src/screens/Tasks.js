@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
 import { getAllTasks, resetTaskStatus } from '../features/task';
@@ -7,14 +7,26 @@ import { getAllTasks, resetTaskStatus } from '../features/task';
 export const Tasks = ({ navigation }) => {
     const taskList = useSelector((state) => state.task.taskList.tasks);
     const user = useSelector((state) => state.user);
-    const dispatch = useDispatch();
     const requestStatus = useSelector((state) => state.task.status);
+    const errorMessage = useSelector((state) => state.task.error);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getAllTasks(user));
     }, []);
 
     useEffect(() => {
+        if (requestStatus === 'error') {
+            Alert.alert('An issue occured', errorMessage, [
+                {
+                    onPress: () => {
+                        dispatch(getAllTasks(user));
+                    },
+                    text: 'Retry',
+                },
+            ]);
+        }
+
         if (requestStatus === 'resolved') {
             setTimeout(() => dispatch(resetTaskStatus()), 550);
         }

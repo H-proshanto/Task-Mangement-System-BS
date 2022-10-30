@@ -1,12 +1,12 @@
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { addNewTask, updateTask } from '../features/task';
+import { addNewTask, resetTaskStatus, updateTask } from '../features/task';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
@@ -18,6 +18,8 @@ export const TaskForm = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const requestStatus = useSelector((state) => state.task.status);
     const headerTitle = view === 'create' ? 'Add task' : 'Update task';
+    const errorMessage = useSelector((state) => state.task.error);
+
     const onPress = () => {
         if (view === 'create') {
             return addNewTask;
@@ -40,6 +42,15 @@ export const TaskForm = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
+        if (requestStatus === 'error') {
+            Alert.alert('An issue occured', errorMessage, [
+                {
+                    text: 'Okay',
+                },
+            ]);
+            dispatch(resetTaskStatus());
+        }
+
         if (requestStatus === 'resolved') {
             navigation.reset({
                 index: 0,
@@ -49,7 +60,7 @@ export const TaskForm = ({ navigation, route }) => {
     });
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>{headerTitle}</Text>
             </View>
@@ -63,7 +74,7 @@ export const TaskForm = ({ navigation, route }) => {
                             memberId,
                             token,
                             taskId,
-                        }),
+                        })
                     )
                 }
                 validate={validate}

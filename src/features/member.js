@@ -94,8 +94,8 @@ export const memberSlice = createSlice({
     name: 'member',
     initialState,
     reducers: {
-        resetMember: () => initialState,
-        resetMemberStatus: (state) => {
+        resetMembers: () => initialState,
+        resetMembersStatus: (state) => {
             return { ...state, status: 'idle' };
         },
     },
@@ -149,5 +149,5 @@ export const memberSlice = createSlice({
     },
 });
 
-export const { resetMember, resetMemberStatus } = memberSlice.actions;
+export const { resetMembers, resetMembersStatus } = memberSlice.actions;
 export default memberSlice.reducer;

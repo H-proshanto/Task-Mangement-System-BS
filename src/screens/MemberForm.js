@@ -1,22 +1,32 @@
 import { Formik } from 'formik';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { InputField } from '../components/InputField';
-import { addNewMember, updateMember } from '../features/member';
+import { addNewMember, resetMembersStatus, updateMember } from '../features/member';
 
 export const MemberForm = ({ navigation, route }) => {
     const view = route.params?.view;
     const memberName = route.params?.memberName;
     const memberId = route.params?.memberId;
     const token = useSelector((state) => state.user.token);
-    const dispatch = useDispatch();
     const requestStatus = useSelector((state) => state.member.status);
+    const errorMessage = useSelector((state) => state.member.error);
     const headerTitle = view === 'create' ? 'Add member' : 'Update member';
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        if (requestStatus === 'error') {
+            Alert.alert('An issue occured', errorMessage, [
+                {
+                    text: 'Okay',
+                },
+            ]);
+            dispatch(resetMembersStatus());
+        }
+
         if (requestStatus === 'resolved') {
             navigation.reset({
                 index: 0,
@@ -44,7 +54,7 @@ export const MemberForm = ({ navigation, route }) => {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <View style={styles.headerContainer}>
                 <Text style={styles.headerText}>{headerTitle}</Text>
             </View>

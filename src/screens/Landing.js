@@ -1,14 +1,31 @@
-import React from 'react';
-import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Alert, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
     heightPercentageToDP as hp,
-    widthPercentageToDP as wp
+    widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { LoginForm } from '../components/LoginForm';
+import { resetUserStatus } from '../features/user';
 
 export const Landing = ({ navigation }) => {
+    const requestStatus = useSelector((state) => state.user.status);
+    const errorMessage = useSelector((state) => state.user.error);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (requestStatus === 'error') {
+            Alert.alert('An issue occured', errorMessage, [
+                {
+                    text: 'Okay',
+                },
+            ]);
+            dispatch(resetUserStatus());
+        }
+    }, [requestStatus]);
+
     return (
         <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <View style={styles.headerContainer}>

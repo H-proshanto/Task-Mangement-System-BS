@@ -3,13 +3,14 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
-import { deleteMember, memberTaskList } from '../features/member';
+import { deleteMember, memberTaskList, resetMembersStatus } from '../features/member';
 
 export const MemberView = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
     const taskList = useSelector((state) => state.task.taskList.tasks);
     const requestStatus = useSelector((state) => state.member.status);
+    const errorMessage = useSelector((state) => state.member.error);
     const { memberName, memberId } = route.params;
     const data = memberTaskList(memberId, taskList);
 
@@ -29,6 +30,15 @@ export const MemberView = ({ navigation, route }) => {
     };
 
     useEffect(() => {
+        if (requestStatus === 'error') {
+            Alert.alert('An issue occured', errorMessage, [
+                {
+                    text: 'Okay',
+                },
+            ]);
+            dispatch(resetMembersStatus());
+        }
+
         if (requestStatus === 'resolved') {
             navigation.reset({
                 index: 0,

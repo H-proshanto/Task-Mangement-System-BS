@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
-import { getAllMembers, resetMemberStatus } from '../features/member';
+import { getAllMembers, resetMembersStatus } from '../features/member';
 import { getAllTasks } from '../features/task';
 
 export const Members = ({ navigation }) => {
     const memberList = useSelector((state) => state.member.membersList);
     const user = useSelector((state) => state.user);
     const taskList = useSelector((state) => state.task.taskList.tasks);
-
-    const dispatch = useDispatch();
     const requestStatus = useSelector((state) => state.member.status);
+    const errorMessage = useSelector((state) => state.member.error);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getAllTasks(user));
@@ -22,8 +22,19 @@ export const Members = ({ navigation }) => {
     }, [taskList]);
 
     useEffect(() => {
+        if (requestStatus === 'error') {
+            Alert.alert('An issue occured', errorMessage, [
+                {
+                    onPress: () => {
+                        dispatch(getAllTasks(user));
+                    },
+                    text: 'Retry',
+                },
+            ]);
+        }
+
         if (requestStatus === 'resolved') {
-            setTimeout(() => dispatch(resetMemberStatus()), 550);
+            setTimeout(() => dispatch(resetMembersStatus()), 550);
         }
     }, [requestStatus]);
 

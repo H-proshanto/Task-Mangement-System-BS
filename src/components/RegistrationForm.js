@@ -2,6 +2,7 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MAIL_FORMAT } from '../config';
 import { registration, resetUserStatus } from '../features/user';
 import { ButtonUI } from './ButtonUI';
 import { InputField } from './InputField';
@@ -21,7 +22,6 @@ export const RegistrationForm = ({ navigation }) => {
     });
 
     const validate = (values) => {
-        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const errors = {};
 
         if (!values.name) {
@@ -34,7 +34,7 @@ export const RegistrationForm = ({ navigation }) => {
 
         if (!values.email) {
             errors.email = 'Email is required';
-        } else if (!values.email.match(mailformat)) {
+        } else if (!values.email.match(MAIL_FORMAT)) {
             errors.email = 'Invalid email address';
         }
 

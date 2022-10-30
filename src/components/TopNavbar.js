@@ -2,6 +2,8 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { resetMembers } from '../features/member';
+import { resetTasks } from '../features/task';
 import { logout } from '../features/user';
 
 export const TopNavbar = ({ navigation }) => {
@@ -20,8 +22,13 @@ export const TopNavbar = ({ navigation }) => {
     });
     const dispatch = useDispatch();
     const clearAllData = () => {
-        setTimeout(() => dispatch(logout()), 100);
+        setTimeout(() => {
+            dispatch(logout());
+            dispatch(resetTasks());
+            dispatch(resetMembers());
+        }, 100);
     };
+
     return (
         <View style={styles.navContainer}>
             {shouldShowBackBtn && (

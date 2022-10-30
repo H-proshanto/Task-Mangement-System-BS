@@ -8,6 +8,7 @@ export const TaskView = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
     const requestStatus = useSelector((state) => state.task.status);
+    const errorMessage = useSelector((state) => state.task.error);
     const { title, description, todoId, memberName, memberId } = route.params;
 
     const confimationWindow = () => {
@@ -26,12 +27,20 @@ export const TaskView = ({ navigation, route }) => {
     };
 
     useEffect(() => {
+        if (requestStatus === 'error') {
+            Alert.alert('An issue occured', errorMessage, [
+                {
+                    text: 'Okay',
+                },
+            ]);
+            dispatch(resetTaskStatus());
+        }
+
         if (requestStatus === 'resolved') {
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'DashBoard' }],
             });
-            dispatch(resetTaskStatus());
         }
     }, [requestStatus]);
 

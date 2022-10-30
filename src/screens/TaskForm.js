@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { addNewTask, resetTaskStatus, updateTask } from '../features/task';
+import { addNewTask, updateTask } from '../features/task';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
@@ -41,11 +41,10 @@ export const TaskForm = ({ navigation, route }) => {
 
     useEffect(() => {
         if (requestStatus === 'resolved') {
-            // navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: 'DashBoard' }],
-            // });
-            dispatch(resetTaskStatus());
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard' }],
+            });
         }
     });
 

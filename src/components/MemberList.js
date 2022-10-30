@@ -1,11 +1,8 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { MemberItemView } from './MemberItemView';
 
-export const MemberList = ({ navigation }) => {
-    const memberList = useSelector((state) => state.member.membersList);
-
+export const MemberList = ({ navigation, data }) => {
     const renderItem = ({ item }) => (
         <MemberItemView
             memberId={item.id}
@@ -17,7 +14,7 @@ export const MemberList = ({ navigation }) => {
 
     return (
         <View style={styles.listContainer}>
-            <FlatList data={memberList} renderItem={renderItem} />
+            <FlatList data={data} renderItem={renderItem} />
         </View>
     );
 };

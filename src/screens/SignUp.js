@@ -6,7 +6,7 @@ import { RegistrationForm } from '../components/RegistrationForm';
 
 export const SignUp = ({ navigation }) => {
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <View style={styles.headerContainer}>
                 <Image style={styles.headerlogo} source={require('../assets/logo.png')} />
                 <Text style={styles.headertext}> Registration </Text>

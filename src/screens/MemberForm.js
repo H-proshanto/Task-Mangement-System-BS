@@ -56,7 +56,7 @@ export const MemberForm = ({ navigation, route }) => {
                             token,
                             memberName: values.memberName,
                             memberId,
-                        })
+                        }),
                     )
                 }
                 validate={validate}
@@ -82,7 +82,7 @@ export const MemberForm = ({ navigation, route }) => {
                                 textStyle={styles.buttonText}
                                 onPress={handleSubmit}
                                 isLoading={requestStatus !== 'idle'}
-                                loaderSize={20}
+                                loaderSize={30}
                                 loaderStyle={styles.loaderStyle}
                             />
                         </View>

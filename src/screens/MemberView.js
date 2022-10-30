@@ -2,13 +2,16 @@ import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
-import { deleteMember, resetMemberStatus } from '../features/member';
+import { TaskList } from '../components/TaskList';
+import { deleteMember, memberTaskList } from '../features/member';
 
 export const MemberView = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
+    const taskList = useSelector((state) => state.task.taskList.tasks);
     const requestStatus = useSelector((state) => state.member.status);
     const { memberName, memberId } = route.params;
+    const data = memberTaskList(memberId, taskList);
 
     const confimationWindow = () => {
         Alert.alert('Are you sure you want to delete this task', '', [
@@ -31,7 +34,6 @@ export const MemberView = ({ navigation, route }) => {
                 index: 0,
                 routes: [{ name: 'DashBoard' }],
             });
-            dispatch(resetMemberStatus());
         }
     }, [requestStatus]);
 
@@ -40,10 +42,6 @@ export const MemberView = ({ navigation, route }) => {
             <View style={styles.titleContainer}>
                 <Text style={styles.titleText}>Name</Text>
                 <Text style={styles.title}>{memberName}</Text>
-            </View>
-            <View style={styles.TaskContainer}>
-                <Text style={styles.TaskText}>Tasks :</Text>
-                <Text style={styles.member}>Tasks</Text>
             </View>
             <View style={styles.buttonContainer}>
                 <ButtonUI
@@ -72,6 +70,10 @@ export const MemberView = ({ navigation, route }) => {
                     loaderStyle={styles.loaderStyle}
                     loaderSize={32}
                 />
+            </View>
+            <View style={styles.TaskContainer}>
+                <Text style={styles.TaskText}>Tasks :</Text>
+                <TaskList navigation={navigation} data={data} />
             </View>
         </View>
     );
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
     },
     TaskContainer: {
-        flex: 0.2,
+        flex: 0.65,
         padding: 7,
     },
     TaskText: {
@@ -132,7 +134,6 @@ const styles = StyleSheet.create({
     },
     editContainer: {
         alignItems: 'center',
-        marginTop: 32,
     },
     editButton: {
         backgroundColor: '#A261C5',
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
         paddingRight: 11,
     },
     buttonContainer: {
-        flex: 0.4,
+        flex: 0.15,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
     },

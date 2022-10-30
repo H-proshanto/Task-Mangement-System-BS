@@ -20,6 +20,7 @@ export const getAllTasks = createAsyncThunk('task/getAllTasks', async (params) =
 
     return response.data;
 });
+
 export const getSingleTask = async (params) => {
     const apiSubDirectory = 'tasks';
     const apiDirectory = 'private';

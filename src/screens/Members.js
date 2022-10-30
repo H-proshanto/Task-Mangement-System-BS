@@ -1,50 +1,62 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
 import { getAllMembers, resetMemberStatus } from '../features/member';
+import { getAllTasks } from '../features/task';
 
 export const Members = ({ navigation }) => {
-    const token = useSelector((state) => state.user.token);
+    const memberList = useSelector((state) => state.member.membersList);
+    const user = useSelector((state) => state.user);
     const taskList = useSelector((state) => state.task.taskList.tasks);
 
     const dispatch = useDispatch();
     const requestStatus = useSelector((state) => state.member.status);
 
     useEffect(() => {
-        dispatch(getAllMembers({ token, taskList }));
+        dispatch(getAllTasks(user));
     }, []);
 
     useEffect(() => {
+        dispatch(getAllMembers({ token: user.token, taskList }));
+    }, [taskList]);
+
+    useEffect(() => {
         if (requestStatus === 'resolved') {
-            dispatch(resetMemberStatus());
+            setTimeout(() => dispatch(resetMemberStatus()), 550);
         }
     }, [requestStatus]);
 
     return (
         <>
-            <View style={styles.container}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>All Members</Text>
-                    <Text style={styles.headerDescription}>
-                        You will find all your members here.
-                    </Text>
-                </View>
-                <View style={styles.bodyContainer}>
-                    <Text style={styles.bodyTitle}>Here are all members:</Text>
-                    <View style={styles.createButtonContainer}>
-                        <TouchableOpacity
-                            style={styles.createButton}
-                            onPress={() => {
-                                navigation.navigate('MemberForm', { view: 'create' });
-                            }}
-                        >
-                            <Text style={styles.createButtonText}>Add new</Text>
-                        </TouchableOpacity>
+            {requestStatus !== 'idle' ? (
+                <ActivityIndicator size={50} color="#f5054d" style={styles.loader} />
+            ) : (
+                <>
+                    <View style={styles.container}>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.headerText}>All Members</Text>
+                            <Text style={styles.headerDescription}>
+                                You will find all your members here.
+                            </Text>
+                        </View>
+                        <View style={styles.bodyContainer}>
+                            <Text style={styles.bodyTitle}>Here are all members:</Text>
+                            <View style={styles.createButtonContainer}>
+                                <TouchableOpacity
+                                    style={styles.createButton}
+                                    onPress={() => {
+                                        navigation.navigate('MemberForm', { view: 'create' });
+                                    }}
+                                >
+                                    <Text style={styles.createButtonText}>Add new</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <MemberList navigation={navigation} data={memberList} />
                     </View>
-                </View>
-                <MemberList navigation={navigation} />
-            </View>
+                </>
+            )}
         </>
     );
 };
@@ -90,5 +102,10 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         textDecorationLine: 'underline',
         marginRight: 7,
+    },
+    loader: {
+        position: 'absolute',
+        top: '40%',
+        left: '45%',
     },
 });

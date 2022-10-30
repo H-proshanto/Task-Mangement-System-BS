@@ -54,7 +54,6 @@ export const updateMember = createAsyncThunk('task/updateMember', async (params)
     const apiSubDirectory = 'members';
     const apiDirectory = 'private';
     const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/${params.memberId}`;
-    console.log(params);
     await axios({
         method: 'PATCH',
         url,
@@ -85,6 +84,10 @@ export const dropDownMemberList = (memberList) => {
     });
 
     return formattedMemberList;
+};
+
+export const memberTaskList = (memberId, taskList) => {
+    return taskList.filter((task) => task.memberId === memberId);
 };
 
 export const memberSlice = createSlice({

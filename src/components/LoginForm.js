@@ -16,7 +16,7 @@ export const LoginForm = ({ navigation }) => {
                 index: 0,
                 routes: [{ name: 'DashBoard' }],
             });
-            dispatch(resetUserStatus());
+            setTimeout(() => dispatch(resetUserStatus()), 550);
         }
     });
     const validate = (values) => {
@@ -57,6 +57,7 @@ export const LoginForm = ({ navigation }) => {
                         setter={handleChange('password')}
                         onBlur={handleBlur('password')}
                         placeholder="Password"
+                        editable={requestStatus === 'running' ? false : true}
                     />
                     {errors.password && touched.password ? (
                         <Text style={styles.errorMessage}>{errors.password}</Text>

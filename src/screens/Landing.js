@@ -3,14 +3,14 @@ import { Image, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
     heightPercentageToDP as hp,
-    widthPercentageToDP as wp,
+    widthPercentageToDP as wp
 } from 'react-native-responsive-screen';
 import { ButtonUI } from '../components/ButtonUI';
 import { LoginForm } from '../components/LoginForm';
 
 export const Landing = ({ navigation }) => {
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <View style={styles.headerContainer}>
                 <Image style={styles.headerlogo} source={require('../assets/logo.png')} />
                 <Text style={styles.headertext}> Task Management </Text>

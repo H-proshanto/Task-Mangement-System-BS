@@ -16,19 +16,26 @@ export const RegistrationForm = ({ navigation }) => {
                 index: 0,
                 routes: [{ name: 'DashBoard' }],
             });
-            dispatch(resetUserStatus());
+            setTimeout(() => dispatch(resetUserStatus()), 550);
         }
     });
 
     const validate = (values) => {
+        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const errors = {};
 
         if (!values.name) {
             errors.name = 'Name is required';
         }
 
+        if (values.name.length > 10) {
+            errors.name = 'Username can not be more than 10 letters';
+        }
+
         if (!values.email) {
             errors.email = 'Email is required';
+        } else if (!values.email.match(mailformat)) {
+            errors.email = 'Invalid email address';
         }
 
         if (!values.password) {

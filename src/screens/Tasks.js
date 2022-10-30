@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
 import { getAllTasks, resetTaskStatus } from '../features/task';
@@ -16,32 +16,40 @@ export const Tasks = ({ navigation }) => {
 
     useEffect(() => {
         if (requestStatus === 'resolved') {
-            dispatch(resetTaskStatus());
+            setTimeout(() => dispatch(resetTaskStatus()), 550);
         }
     }, [requestStatus]);
 
     return (
         <>
-            <View style={styles.container}>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.headerText}>All Tasks</Text>
-                    <Text style={styles.headerDescription}>You will find all your tasks here.</Text>
-                </View>
-                <View style={styles.bodyContainer}>
-                    <Text style={styles.bodyTitle}>Here are all tasks:</Text>
-                    <View style={styles.createButtonContainer}>
-                        <TouchableOpacity
-                            style={styles.createButton}
-                            onPress={() => {
-                                navigation.navigate('TaskForm', { view: 'create' });
-                            }}
-                        >
-                            <Text style={styles.createButtonText}>Add new</Text>
-                        </TouchableOpacity>
+            {requestStatus !== 'idle' ? (
+                <ActivityIndicator size={50} color="#f5054d" style={styles.loader} />
+            ) : (
+                <>
+                    <View style={styles.container}>
+                        <View style={styles.headerContainer}>
+                            <Text style={styles.headerText}>All Tasks</Text>
+                            <Text style={styles.headerDescription}>
+                                You will find all your tasks here.
+                            </Text>
+                        </View>
+                        <View style={styles.bodyContainer}>
+                            <Text style={styles.bodyTitle}>Here are all tasks:</Text>
+                            <View style={styles.createButtonContainer}>
+                                <TouchableOpacity
+                                    style={styles.createButton}
+                                    onPress={() => {
+                                        navigation.navigate('TaskForm', { view: 'create' });
+                                    }}
+                                >
+                                    <Text style={styles.createButtonText}>Add new</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <TaskList navigation={navigation} data={taskList} />
                     </View>
-                </View>
-                <TaskList navigation={navigation} data={taskList} />
-            </View>
+                </>
+            )}
         </>
     );
 };
@@ -87,5 +95,10 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         textDecorationLine: 'underline',
         marginRight: 7,
+    },
+    loader: {
+        position: 'absolute',
+        top: '40%',
+        left: '45%',
     },
 });

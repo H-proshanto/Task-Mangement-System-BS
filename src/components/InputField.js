@@ -1,12 +1,21 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 export const InputField = ({ text, setter, placeholder, onBlur }) => {
+    const shouldBeEditable = useSelector(
+        (state) =>
+            state.user.status !== 'running' &&
+            state.task.status !== 'running' &&
+            state.member.status !== 'running',
+    );
+
     return (
         <>
             <View style={styles.inputContainer}>
                 <Text style={styles.inputTitle}>{placeholder}</Text>
                 <TextInput
+                    editable={shouldBeEditable}
                     style={styles.inputText}
                     placeholder={`Enter ${placeholder} Here`}
                     onChangeText={setter}

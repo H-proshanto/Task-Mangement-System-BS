@@ -1,16 +1,34 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../features/user';
 
 export const TopNavbar = ({ navigation }) => {
     const username = useSelector((state) => state.user.info.name);
+    const routesArray = navigation.getState().routes.map((route) => route.name);
+    const shouldShowBackBtn = routesArray.some((route) => {
+        if (
+            route === 'TaskView' ||
+            route === 'MemberView' ||
+            route === 'TaskForm' ||
+            route === 'MemberForm'
+        ) {
+            return true;
+        }
+        return false;
+    });
     const dispatch = useDispatch();
     const clearAllData = () => {
         setTimeout(() => dispatch(logout()), 100);
     };
     return (
         <View style={styles.navContainer}>
+            {shouldShowBackBtn && (
+                <TouchableOpacity onPress={() => navigation.pop()}>
+                    <Image style={styles.backBtn} source={require('../assets/back.png')} />
+                </TouchableOpacity>
+            )}
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={require('../assets/logo.png')} />
             </View>
@@ -83,5 +101,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    backBtn: {
+        tintColor: 'white',
+        marginTop: 37,
+        marginLeft: 3,
+        alignSelf: 'center',
+        height: 24,
+        width: 24,
     },
 });

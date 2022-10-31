@@ -2,15 +2,22 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAllMembers } from '../features/member';
 import { getAllTasks } from '../features/task';
 
 export const DashBoard = ({ navigation }) => {
     const user = useSelector((state) => state.user);
+    const token = useSelector((state) => state.user.token);
+    const taskList = useSelector((state) => state.task.taskList.tasks);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getAllTasks(user));
     }, []);
+
+    useEffect(() => {
+        dispatch(getAllMembers({ token, taskList }));
+    }, [taskList]);
 
     return (
         <ScrollView style={styles.container}>

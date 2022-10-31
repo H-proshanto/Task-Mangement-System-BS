@@ -39,7 +39,7 @@ export const LoginForm = ({ navigation }) => {
 
     return (
         <Formik
-            initialValues={{ email: 'proshanto@email.com', password: '123456' }}
+            initialValues={{ email: '', password: '' }}
             onSubmit={(values) => dispatch(login(values))}
             validate={validate}
         >

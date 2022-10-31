@@ -3,6 +3,7 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
 import { getAllTasks, resetTaskStatus } from '../features/task';
+import { logout } from '../helpers/sessionHelpers';
 
 export const Tasks = ({ navigation }) => {
     const taskList = useSelector((state) => state.task.taskList.tasks);
@@ -12,22 +13,23 @@ export const Tasks = ({ navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllTasks(user));
-    }, []);
-
-    useEffect(() => {
         if (requestStatus === 'error') {
-            Alert.alert('An issue occured', errorMessage, [
-                {
-                    onPress: () => {
-                        dispatch(getAllTasks(user));
+            if (errorMessage.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', errorMessage, [
+                    {
+                        onPress: () => {
+                            dispatch(getAllTasks(user));
+                        },
+                        text: 'Retry',
                     },
-                    text: 'Retry',
-                },
-            ]);
+                ]);
+            }
         }
 
-        if (requestStatus === 'resolved') {
+        if (requestStatus === 'resolved' || requestStatus === 'recieved') {
             setTimeout(() => dispatch(resetTaskStatus()), 550);
         }
     }, [requestStatus]);

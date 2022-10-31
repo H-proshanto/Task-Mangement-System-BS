@@ -1,9 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './src/app/store';
+import { AppLoader } from './src/components/AppLoader';
 import { Tabs } from './src/components/Tabs';
 import { TopNavbar } from './src/components/TopNavbar';
 import { Landing } from './src/screens/Landing';
@@ -16,12 +17,17 @@ import { TaskView } from './src/screens/TaskView';
 const Stack = createStackNavigator();
 
 export default function App() {
+    const [initialRoute, setInitialRoute] = useState('Landing');
+
     return (
         <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
+            <PersistGate
+                loading={<AppLoader setInitialRoute={setInitialRoute} />}
+                persistor={persistor}
+            >
                 <NavigationContainer>
                     <Stack.Navigator
-                        initialRouteName="Landing"
+                        initialRouteName={initialRoute}
                         screenOptions={({ navigation }) => ({
                             header: () => <TopNavbar navigation={navigation} />,
                         })}

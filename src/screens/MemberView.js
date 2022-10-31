@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
 import { deleteMember, memberTaskList, resetMembersStatus } from '../features/member';
+import { logout } from '../helpers/sessionHelpers';
 
 export const MemberView = ({ navigation, route }) => {
     const dispatch = useDispatch();
@@ -31,12 +32,17 @@ export const MemberView = ({ navigation, route }) => {
 
     useEffect(() => {
         if (requestStatus === 'error') {
-            Alert.alert('An issue occured', errorMessage, [
-                {
-                    text: 'Okay',
-                },
-            ]);
-            dispatch(resetMembersStatus());
+            if (errorMessage.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', errorMessage, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+                dispatch(resetMembersStatus());
+            }
         }
 
         if (requestStatus === 'resolved') {

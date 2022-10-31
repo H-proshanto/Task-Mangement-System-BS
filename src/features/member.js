@@ -18,22 +18,7 @@ export const getAllMembers = createAsyncThunk('member/getAllMembers', async (par
         headers: { Authorization: `Bearer ${params.token}` },
     });
 
-    const memberList = response.data.members;
-
-    const newMemberList = memberList.map((member) => {
-        const taskCount = params.taskList.reduce((count, task) => {
-            if (member.id === task.memberId) {
-                count++;
-            }
-
-            return count;
-        }, 0);
-
-        member.taskCount = taskCount;
-        return member;
-    });
-
-    return newMemberList;
+    return response.data.members;
 });
 
 export const addNewMember = createAsyncThunk('task/addNewMember', async (params) => {
@@ -84,6 +69,20 @@ export const dropDownMemberList = (memberList) => {
     });
 
     return formattedMemberList;
+};
+
+export const memberViewList = (memberList, taskList) => {
+    return memberList.map((member) => {
+        const taskCount = taskList.reduce((count, task) => {
+            if (member.id === task.memberId) {
+                count++;
+            }
+
+            return count;
+        }, 0);
+
+        return { ...member, taskCount };
+    });
 };
 
 export const memberTaskList = (memberId, taskList) => {

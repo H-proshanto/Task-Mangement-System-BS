@@ -2,35 +2,37 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
-import { getAllMembers, resetMembersStatus } from '../features/member';
-import { getAllTasks } from '../features/task';
+import { getAllMembers, memberViewList, resetMembersStatus } from '../features/member';
+import { logout } from '../helpers/sessionHelpers';
 
 export const Members = ({ navigation }) => {
     const memberList = useSelector((state) => state.member.membersList);
-    const user = useSelector((state) => state.user);
+    const token = useSelector((state) => state.user.token);
     const taskList = useSelector((state) => state.task.taskList.tasks);
     const requestStatus = useSelector((state) => state.member.status);
     const errorMessage = useSelector((state) => state.member.error);
+    const data = memberViewList(memberList, taskList);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllTasks(user));
-    }, []);
-
-    useEffect(() => {
-        dispatch(getAllMembers({ token: user.token, taskList }));
+        dispatch(getAllMembers({ token }));
     }, [taskList]);
 
     useEffect(() => {
         if (requestStatus === 'error') {
-            Alert.alert('An issue occured', errorMessage, [
-                {
-                    onPress: () => {
-                        dispatch(getAllTasks(user));
+            if (errorMessage.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', errorMessage, [
+                    {
+                        onPress: () => {
+                            dispatch(getAllMembers(token));
+                        },
+                        text: 'Retry',
                     },
-                    text: 'Retry',
-                },
-            ]);
+                ]);
+            }
         }
 
         if (requestStatus === 'resolved') {
@@ -64,7 +66,7 @@ export const Members = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <MemberList navigation={navigation} data={memberList} />
+                        <MemberList navigation={navigation} data={data} />
                     </View>
                 </>
             )}

@@ -2,9 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetMembers } from '../features/member';
-import { resetTasks } from '../features/task';
-import { logout } from '../features/user';
+import { logout } from '../helpers/sessionHelpers';
 
 export const TopNavbar = ({ navigation }) => {
     const username = useSelector((state) => state.user.info.name);
@@ -21,13 +19,6 @@ export const TopNavbar = ({ navigation }) => {
         return false;
     });
     const dispatch = useDispatch();
-    const clearAllData = () => {
-        setTimeout(() => {
-            dispatch(logout());
-            dispatch(resetTasks());
-            dispatch(resetMembers());
-        }, 100);
-    };
 
     return (
         <View style={styles.navContainer}>
@@ -46,11 +37,7 @@ export const TopNavbar = ({ navigation }) => {
                 <Text style={styles.username}>{username}</Text>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'Landing' }],
-                        });
-                        clearAllData();
+                        logout(dispatch, navigation);
                     }}
                 >
                     <Image style={styles.logout} source={require('../assets/logout-icon.png')} />

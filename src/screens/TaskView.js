@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { deleteTask, resetTaskStatus } from '../features/task';
+import { logout } from '../helpers/sessionHelpers';
 
 export const TaskView = ({ navigation, route }) => {
     const dispatch = useDispatch();
@@ -28,12 +29,17 @@ export const TaskView = ({ navigation, route }) => {
 
     useEffect(() => {
         if (requestStatus === 'error') {
-            Alert.alert('An issue occured', errorMessage, [
-                {
-                    text: 'Okay',
-                },
-            ]);
-            dispatch(resetTaskStatus());
+            if (errorMessage.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', errorMessage, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+                dispatch(resetTaskStatus());
+            }
         }
 
         if (requestStatus === 'resolved') {

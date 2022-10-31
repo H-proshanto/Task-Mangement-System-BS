@@ -2,21 +2,15 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
-import { getAllMembers, memberViewList, resetMembersStatus } from '../features/member';
+import { getAllMembers, resetMembersStatus } from '../features/member';
 import { logout } from '../helpers/sessionHelpers';
 
 export const Members = ({ navigation }) => {
     const memberList = useSelector((state) => state.member.membersList);
     const token = useSelector((state) => state.user.token);
-    const taskList = useSelector((state) => state.task.taskList.tasks);
     const requestStatus = useSelector((state) => state.member.status);
     const errorMessage = useSelector((state) => state.member.error);
-    const data = memberViewList(memberList, taskList);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getAllMembers({ token }));
-    }, [taskList]);
 
     useEffect(() => {
         if (requestStatus === 'error') {
@@ -66,7 +60,7 @@ export const Members = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <MemberList navigation={navigation} data={data} />
+                        <MemberList navigation={navigation} data={memberList} />
                     </View>
                 </>
             )}

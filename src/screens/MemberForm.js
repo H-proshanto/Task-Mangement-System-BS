@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { InputField } from '../components/InputField';
 import { addNewMember, resetMembersStatus, updateMember } from '../features/member';
+import { logout } from '../helpers/sessionHelpers';
 
 export const MemberForm = ({ navigation, route }) => {
     const view = route.params?.view;
@@ -19,12 +20,17 @@ export const MemberForm = ({ navigation, route }) => {
 
     useEffect(() => {
         if (requestStatus === 'error') {
-            Alert.alert('An issue occured', errorMessage, [
-                {
-                    text: 'Okay',
-                },
-            ]);
-            dispatch(resetMembersStatus());
+            if (errorMessage.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', errorMessage, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+                dispatch(resetMembersStatus());
+            }
         }
 
         if (requestStatus === 'resolved') {

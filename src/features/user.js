@@ -70,7 +70,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        logout: () => initialState,
+        resetUser: () => initialState,
         resetUserStatus: (state) => {
             return { ...state, status: 'idle' };
         },
@@ -114,5 +114,5 @@ export const userSlice = createSlice({
     },
 });
 
-export const { logout, resetUserStatus } = userSlice.actions;
+export const { resetUser, resetUserStatus } = userSlice.actions;
 export default userSlice.reducer;

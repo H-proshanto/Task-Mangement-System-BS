@@ -7,7 +7,7 @@ export const InputField = ({ text, setter, placeholder, onBlur }) => {
         (state) =>
             state.user.status !== 'running' &&
             state.task.status !== 'running' &&
-            state.member.status !== 'running'
+            state.member.status !== 'running',
     );
 
     return (

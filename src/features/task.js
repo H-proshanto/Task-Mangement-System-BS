@@ -82,7 +82,9 @@ export const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {
-        resetTasks: () => initialState,
+        resetTasks: (state) => {
+            return { ...state, taskList: [] };
+        },
         resetTaskStatus: (state) => {
             return { ...state, status: 'idle' };
         },
@@ -95,7 +97,7 @@ export const taskSlice = createSlice({
             .addCase(getAllTasks.fulfilled, (state, action) => {
                 state.taskList = action.payload;
                 state.error = '';
-                state.status = 'resolved';
+                state.status = 'recieved';
             })
             .addCase(getAllTasks.rejected, (state, action) => {
                 state.error = action.error?.message;

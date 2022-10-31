@@ -7,6 +7,7 @@ import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
 import { addNewTask, resetTaskStatus, updateTask } from '../features/task';
+import { logout } from '../helpers/sessionHelpers';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
@@ -43,12 +44,17 @@ export const TaskForm = ({ navigation, route }) => {
 
     useEffect(() => {
         if (requestStatus === 'error') {
-            Alert.alert('An issue occured', errorMessage, [
-                {
-                    text: 'Okay',
-                },
-            ]);
-            dispatch(resetTaskStatus());
+            if (errorMessage.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', errorMessage, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+                dispatch(resetTaskStatus());
+            }
         }
 
         if (requestStatus === 'resolved') {
@@ -74,7 +80,7 @@ export const TaskForm = ({ navigation, route }) => {
                             memberId,
                             token,
                             taskId,
-                        })
+                        }),
                     )
                 }
                 validate={validate}

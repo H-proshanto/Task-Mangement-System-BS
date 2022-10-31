@@ -29,7 +29,7 @@ export const Members = ({ navigation }) => {
             }
         }
 
-        if (requestStatus === 'resolved') {
+        if (requestStatus === 'resolved' || requestStatus === 'recieved') {
             setTimeout(() => dispatch(resetMembersStatus()), 550);
         }
     }, [requestStatus]);

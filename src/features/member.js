@@ -106,7 +106,7 @@ export const memberSlice = createSlice({
             .addCase(getAllMembers.fulfilled, (state, action) => {
                 state.membersList = action.payload;
                 state.error = '';
-                state.status = 'resolved';
+                state.status = 'recieved';
             })
             .addCase(getAllMembers.rejected, (state, action) => {
                 state.error = action.error?.message;

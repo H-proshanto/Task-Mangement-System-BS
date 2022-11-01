@@ -30,7 +30,7 @@ export const Members = ({ navigation }) => {
         }
 
         if (requestStatus === 'resolved' || requestStatus === 'recieved') {
-            setTimeout(() => dispatch(resetMembersStatus()), 550);
+            setTimeout(() => dispatch(resetMembersStatus()), 600);
         }
     }, [requestStatus]);
 

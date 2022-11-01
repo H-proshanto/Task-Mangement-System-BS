@@ -107,6 +107,9 @@ export const RegistrationForm = ({ navigation }) => {
                         buttonStyle={styles.signUpButton}
                         textStyle={styles.signUpText}
                         onPress={handleSubmit}
+                        isLoading={requestStatus !== 'idle'}
+                        loaderStyle={styles.loaderStyle}
+                        loaderSize={20}
                     />
                 </View>
             )}
@@ -139,5 +142,11 @@ const styles = StyleSheet.create({
         padding: 5,
         textAlign: 'center',
         alignSelf: 'center',
+    },
+    loaderStyle: {
+        paddingTop: 6,
+        paddingBottom: 5,
+        paddingLeft: 21,
+        paddingRight: 21,
     },
 });

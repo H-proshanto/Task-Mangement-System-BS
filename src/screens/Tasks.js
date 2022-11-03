@@ -3,7 +3,7 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
 import { getAllTasks, resetTaskStatus } from '../features/task';
-import { logout } from '../helpers/sessionHelpers';
+import { logout } from '../helpers/session';
 
 export const Tasks = ({ navigation }) => {
     const taskList = useSelector((state) => state.task.taskList.tasks);

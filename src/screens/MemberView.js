@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
 import { deleteMember, memberTaskList, resetMembersStatus } from '../features/member';
-import { logout } from '../helpers/sessionHelpers';
+import { logout } from '../helpers/session';
 
 export const MemberView = ({ navigation, route }) => {
     const dispatch = useDispatch();

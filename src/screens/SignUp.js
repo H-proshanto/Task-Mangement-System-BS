@@ -5,7 +5,6 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { RegistrationForm } from '../components/RegistrationForm';
 import { resetUserStatus } from '../features/user';
-import { logout } from '../helpers/sessionHelpers';
 
 export const SignUp = ({ navigation }) => {
     const requestStatus = useSelector((state) => state.user.status);
@@ -14,9 +13,8 @@ export const SignUp = ({ navigation }) => {
 
     useEffect(() => {
         if (requestStatus === 'error') {
-            if (errorMessage.includes('401')) {
-                Alert.alert('An issue occured', 'Session expired. Please Log In again');
-                logout(dispatch, navigation);
+            if (errorMessage.includes('403')) {
+                Alert.alert('User already Exists.');
             } else {
                 Alert.alert('An issue occured', errorMessage, [
                     {

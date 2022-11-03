@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../helpers/sessionHelpers';
+import { logout } from '../helpers/session';
 
 export const TopNavbar = ({ navigation }) => {
     const username = useSelector((state) => state.user.info.name);

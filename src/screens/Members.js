@@ -3,7 +3,7 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
 import { getAllMembers, resetMembersStatus } from '../features/member';
-import { logout } from '../helpers/sessionHelpers';
+import { logout } from '../helpers/session';
 
 export const Members = ({ navigation }) => {
     const memberList = useSelector((state) => state.member.membersList);
@@ -30,7 +30,7 @@ export const Members = ({ navigation }) => {
         }
 
         if (requestStatus === 'resolved' || requestStatus === 'recieved') {
-            setTimeout(() => dispatch(resetMembersStatus()), 550);
+            setTimeout(() => dispatch(resetMembersStatus()), 600);
         }
     }, [requestStatus]);
 

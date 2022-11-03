@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { addNewTask, resetTaskStatus, updateTask } from '../features/task';
-import { logout } from '../helpers/sessionHelpers';
+import { resetTaskStatus } from '../features/task';
+import { onPressTaskForm } from '../helpers/MethodSelector';
+import { logout } from '../helpers/session';
+import { validateTaskForm } from '../helpers/validation';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
@@ -20,23 +22,6 @@ export const TaskForm = ({ navigation, route }) => {
     const requestStatus = useSelector((state) => state.task.status);
     const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const errorMessage = useSelector((state) => state.task.error);
-
-    const onPress = () => {
-        if (view === 'create') {
-            return addNewTask;
-        } else {
-            return updateTask;
-        }
-    };
-    const validate = (values) => {
-        const errors = {};
-
-        if (!values.title) {
-            errors.title = 'Title is required';
-        }
-
-        return errors;
-    };
 
     useEffect(() => {
         setMemberId(route.params?.memberId);
@@ -74,7 +59,7 @@ export const TaskForm = ({ navigation, route }) => {
                 initialValues={{ title: title || '', description: description || '' }}
                 onSubmit={(values) =>
                     dispatch(
-                        onPress()({
+                        onPressTaskForm(view)({
                             title: values.title,
                             description: values.description,
                             memberId,
@@ -83,7 +68,7 @@ export const TaskForm = ({ navigation, route }) => {
                         }),
                     )
                 }
-                validate={validate}
+                validate={validateTaskForm}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                     <View style={styles.formContainer}>

@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { deleteTask, resetTaskStatus } from '../features/task';
-import { logout } from '../helpers/sessionHelpers';
+import { logout } from '../helpers/session';
 
 export const TaskView = ({ navigation, route }) => {
     const dispatch = useDispatch();

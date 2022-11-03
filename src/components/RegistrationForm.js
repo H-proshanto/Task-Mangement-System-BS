@@ -2,8 +2,8 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { MAIL_FORMAT } from '../config';
 import { registration, resetUserStatus } from '../features/user';
+import { validateRegistrationForm } from '../helpers/validation';
 import { ButtonUI } from './ButtonUI';
 import { InputField } from './InputField';
 
@@ -21,39 +21,11 @@ export const RegistrationForm = ({ navigation }) => {
         }
     });
 
-    const validate = (values) => {
-        const errors = {};
-
-        if (!values.name) {
-            errors.name = 'Name is required';
-        }
-
-        if (values.name.length > 10) {
-            errors.name = 'Username can not be more than 10 letters';
-        }
-
-        if (!values.email) {
-            errors.email = 'Email is required';
-        } else if (!values.email.match(MAIL_FORMAT)) {
-            errors.email = 'Invalid email address';
-        }
-
-        if (!values.password) {
-            errors.password = 'Password is required';
-        }
-
-        if (values.password !== values.password2) {
-            errors.password2 = 'Password must match';
-        }
-
-        return errors;
-    };
-
     return (
         <Formik
             initialValues={{ name: '', email: '', password: '', password2: '' }}
             onSubmit={(values) => dispatch(registration(values))}
-            validate={validate}
+            validate={validateRegistrationForm}
         >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                 <View>
@@ -107,6 +79,9 @@ export const RegistrationForm = ({ navigation }) => {
                         buttonStyle={styles.signUpButton}
                         textStyle={styles.signUpText}
                         onPress={handleSubmit}
+                        isLoading={requestStatus !== 'idle'}
+                        loaderStyle={styles.loaderStyle}
+                        loaderSize={20}
                     />
                 </View>
             )}
@@ -139,5 +114,11 @@ const styles = StyleSheet.create({
         padding: 5,
         textAlign: 'center',
         alignSelf: 'center',
+    },
+    loaderStyle: {
+        paddingTop: 6,
+        paddingBottom: 5,
+        paddingLeft: 21,
+        paddingRight: 21,
     },
 });

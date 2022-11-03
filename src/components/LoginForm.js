@@ -2,8 +2,8 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { MAIL_FORMAT } from '../config';
 import { login, resetUserStatus } from '../features/user';
+import { validateLoginForm } from '../helpers/validation';
 import { ButtonUI } from './ButtonUI';
 import { InputField } from './InputField';
 
@@ -21,27 +21,11 @@ export const LoginForm = ({ navigation }) => {
         }
     });
 
-    const validate = (values) => {
-        const errors = {};
-
-        if (!values.email) {
-            errors.email = 'Email is required';
-        } else if (!values.email.match(MAIL_FORMAT)) {
-            errors.email = 'Invalid email address';
-        }
-
-        if (!values.password) {
-            errors.password = 'Password is required';
-        }
-
-        return errors;
-    };
-
     return (
         <Formik
             initialValues={{ email: '', password: '' }}
             onSubmit={(values) => dispatch(login(values))}
-            validate={validate}
+            validate={validateLoginForm}
         >
             {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                 <View style={styles.container}>

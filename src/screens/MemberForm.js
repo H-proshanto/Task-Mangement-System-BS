@@ -5,8 +5,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { InputField } from '../components/InputField';
-import { addNewMember, resetMembersStatus, updateMember } from '../features/member';
-import { logout } from '../helpers/sessionHelpers';
+import { resetMembersStatus } from '../features/member';
+import { onPressMemberForm } from '../helpers/MethodSelector';
+import { logout } from '../helpers/session';
+import { validateMemberForm } from '../helpers/validation';
 
 export const MemberForm = ({ navigation, route }) => {
     const view = route.params?.view;
@@ -41,24 +43,6 @@ export const MemberForm = ({ navigation, route }) => {
         }
     });
 
-    const validate = (values) => {
-        const errors = {};
-
-        if (!values.memberName) {
-            errors.memberName = 'Name is required';
-        }
-
-        return errors;
-    };
-
-    const onPress = () => {
-        if (view === 'create') {
-            return addNewMember;
-        } else {
-            return updateMember;
-        }
-    };
-
     return (
         <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
             <View style={styles.headerContainer}>
@@ -68,14 +52,14 @@ export const MemberForm = ({ navigation, route }) => {
                 initialValues={{ memberName: memberName || '' }}
                 onSubmit={(values) =>
                     dispatch(
-                        onPress()({
+                        onPressMemberForm(view)({
                             token,
                             memberName: values.memberName,
                             memberId,
                         }),
                     )
                 }
-                validate={validate}
+                validate={validateMemberForm}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                     <View style={styles.formContainer}>

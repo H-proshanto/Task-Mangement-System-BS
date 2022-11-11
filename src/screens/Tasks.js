@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
-import { getAllTasks, resetTaskStatus } from '../features/task';
+import { getAllTasks, resetTaskStatus } from '../slices/task';
 import { logout } from '../helpers/session';
 
 export const Tasks = ({ navigation }) => {

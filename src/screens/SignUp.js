@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useDispatch, useSelector } from 'react-redux';
 import { RegistrationForm } from '../components/RegistrationForm';
-import { resetUserStatus } from '../features/user';
+import { resetUserStatus } from '../slices/user';
 
 export const SignUp = ({ navigation }) => {
     const requestStatus = useSelector((state) => state.user.status);

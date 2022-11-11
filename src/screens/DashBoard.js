@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllMembers } from '../features/member';
-import { getAllTasks } from '../features/task';
+import { getAllMembers } from '../slices/member';
+import { getAllTasks } from '../slices/task';
 
 export const DashBoard = ({ navigation }) => {
     const user = useSelector((state) => state.user);

@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
-import { deleteMember, memberTaskList, resetMembersStatus } from '../features/member';
+import { deleteMember, memberTaskList, resetMembersStatus } from '../slices/member';
 import { logout } from '../helpers/session';
 
 export const MemberView = ({ navigation, route }) => {

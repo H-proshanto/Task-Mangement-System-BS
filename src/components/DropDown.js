@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector } from 'react-redux';
-import { dropDownMemberList } from '../features/member';
+import { dropDownMemberList } from '../slices/member';
 
 export const DropDown = ({ memberId, setMemberId }) => {
     const [isFocus, setIsFocus] = useState(false);

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { resetTaskStatus } from '../features/task';
+import { resetTaskStatus } from '../slices/task';
 import { onPressTaskForm } from '../helpers/MethodSelector';
 import { logout } from '../helpers/session';
 import { validateTaskForm } from '../helpers/validation';

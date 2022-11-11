@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { InputField } from '../components/InputField';
-import { resetMembersStatus } from '../features/member';
+import { resetMembersStatus } from '../slices/member';
 import { onPressMemberForm } from '../helpers/MethodSelector';
 import { logout } from '../helpers/session';
 import { validateMemberForm } from '../helpers/validation';

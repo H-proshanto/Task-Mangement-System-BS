@@ -1,6 +1,6 @@
-import { resetMembers } from '../features/member';
-import { resetTasks } from '../features/task';
-import { resetUser } from '../features/user';
+import { resetMembers } from '../slices/member';
+import { resetTasks } from '../slices/task';
+import { resetUser } from '../slices/user';
 
 export const logout = (dispatch, navigation) => {
     navigation.reset({

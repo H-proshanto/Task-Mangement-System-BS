@@ -1,5 +1,5 @@
-import { addNewMember, updateMember } from '../features/member';
-import { addNewTask, updateTask } from '../features/task';
+import { addNewMember, updateMember } from '../slices/member';
+import { addNewTask, updateTask } from '../slices/task';
 
 export const onPressMemberForm = (view) => {
     if (view === 'create') {

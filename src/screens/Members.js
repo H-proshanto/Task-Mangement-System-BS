@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
-import { getAllMembers, resetMembersStatus } from '../features/member';
+import { getAllMembers, resetMembersStatus } from '../slices/member';
 import { logout } from '../helpers/session';
 
 export const Members = ({ navigation }) => {

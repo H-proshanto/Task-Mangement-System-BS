@@ -8,7 +8,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { LoginForm } from '../components/LoginForm';
-import { resetUserStatus } from '../features/user';
+import { resetUserStatus } from '../slices/user';
 
 export const Landing = ({ navigation }) => {
     const requestStatus = useSelector((state) => state.user.status);

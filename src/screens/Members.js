@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
-import { resetMembersStatus } from '../slices/member';
 import { logout } from '../helpers/session';
-import { useQuery } from '@tanstack/react-query';
-import { getAllMembers } from '../react-query/memberAPI';
-import { getAllTasks } from '../react-query/taskAPI';
-import { useMembersList, useTaskList, useTasksList } from '../react-query/APIHooks';
+import { useMembersList, useTasksList } from '../react-query/APIHooks';
 
 export const Members = ({ navigation }) => {
     const token = useSelector((state) => state.user.token);
@@ -31,7 +27,6 @@ export const Members = ({ navigation }) => {
         //         ]);
         //     }
         // }
-
         // if (requestStatus === 'resolved' || requestStatus === 'recieved') {
         //     setTimeout(() => dispatch(resetMembersStatus()), 600);
         // }

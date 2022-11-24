@@ -1,5 +1,3 @@
-import { resetMembers } from '../slices/member';
-import { resetTasks } from '../slices/task';
 import { resetUser } from '../slices/user';
 
 export const logout = (dispatch, navigation) => {
@@ -9,8 +7,6 @@ export const logout = (dispatch, navigation) => {
     });
 
     setTimeout(() => {
-        dispatch(resetTasks());
-        dispatch(resetMembers());
         dispatch(resetUser());
     }, 1000);
 };

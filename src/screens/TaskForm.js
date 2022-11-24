@@ -6,48 +6,58 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
-import { resetTaskStatus } from '../slices/task';
-import { onPressTaskForm } from '../helpers/MethodSelector';
 import { logout } from '../helpers/session';
 import { validateTaskForm } from '../helpers/validation';
+import { useTaskFormMutation } from '../react-query/APIHooks';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
+    const [title, setTitle] = useState(route.params?.title);
+    const [description, setDescription] = useState(route.params?.description);
     const view = route.params?.view;
-    const title = route.params?.title;
-    const description = route.params?.description;
     const taskId = route.params?.todoId;
     const token = useSelector((state) => state.user.token);
     const dispatch = useDispatch();
-    const requestStatus = useSelector((state) => state.task.status);
     const headerTitle = view === 'create' ? 'Add task' : 'Update task';
-    const errorMessage = useSelector((state) => state.task.error);
+    const { mutate, status } = useTaskFormMutation(
+        view,
+        token,
+        title,
+        description,
+        taskId,
+        memberId,
+    );
+
+    const onFormSubmit = (values) => {
+        setTitle(values.title);
+        setDescription(values.description);
+        setTimeout(mutate, 0);
+    };
 
     useEffect(() => {
         setMemberId(route.params?.memberId);
     }, []);
 
     useEffect(() => {
-        if (requestStatus === 'error') {
-            if (errorMessage.includes('401')) {
-                Alert.alert('An issue occured', 'Session expired. Please Log In again');
-                logout(dispatch, navigation);
-            } else {
-                Alert.alert('An issue occured', errorMessage, [
-                    {
-                        text: 'Okay',
-                    },
-                ]);
-                dispatch(resetTaskStatus());
-            }
-        }
-
-        if (requestStatus === 'resolved') {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'DashBoard' }],
-            });
-        }
+        // if (requestStatus === 'error') {
+        //     if (errorMessage.includes('401')) {
+        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
+        //         logout(dispatch, navigation);
+        //     } else {
+        //         Alert.alert('An issue occured', errorMessage, [
+        //             {
+        //                 text: 'Okay',
+        //             },
+        //         ]);
+        //         dispatch(resetTaskStatus());
+        //     }
+        // }
+        // if (requestStatus === 'resolved') {
+        //     navigation.reset({
+        //         index: 0,
+        //         routes: [{ name: 'DashBoard' }],
+        //     });
+        // }
     });
 
     return (
@@ -57,17 +67,7 @@ export const TaskForm = ({ navigation, route }) => {
             </View>
             <Formik
                 initialValues={{ title: title || '', description: description || '' }}
-                onSubmit={(values) =>
-                    dispatch(
-                        onPressTaskForm(view)({
-                            title: values.title,
-                            description: values.description,
-                            memberId,
-                            token,
-                            taskId,
-                        }),
-                    )
-                }
+                onSubmit={(values) => onFormSubmit(values)}
                 validate={validateTaskForm}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -102,7 +102,7 @@ export const TaskForm = ({ navigation, route }) => {
                                 buttonStyle={styles.button}
                                 textStyle={styles.buttonText}
                                 onPress={handleSubmit}
-                                isLoading={requestStatus !== 'idle'}
+                                isLoading={status !== 'idle'}
                                 loaderSize={30}
                                 loaderStyle={styles.loaderStyle}
                             />

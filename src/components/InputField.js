@@ -3,12 +3,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export const InputField = ({ text, setter, placeholder, onBlur }) => {
-    const shouldBeEditable = useSelector(
-        (state) =>
-            state.user.status !== 'running' &&
-            state.task.status !== 'running' &&
-            state.member.status !== 'running',
-    );
+    const shouldBeEditable = useSelector((state) => state.user.status !== 'running');
 
     return (
         <>

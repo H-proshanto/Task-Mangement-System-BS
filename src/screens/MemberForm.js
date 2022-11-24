@@ -2,15 +2,11 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { InputField } from '../components/InputField';
-import { resetMembersStatus } from '../slices/member';
-import { onPressMemberForm } from '../helpers/MethodSelector';
 import { logout } from '../helpers/session';
 import { validateMemberForm } from '../helpers/validation';
-import { useMutation } from '@tanstack/react-query';
-import { addNewMember } from '../react-query/memberAPI';
 import { useState } from 'react';
 import { useMemberFormMutation } from '../react-query/APIHooks';
 
@@ -41,7 +37,6 @@ export const MemberForm = ({ navigation, route }) => {
         //         dispatch(resetMembersStatus());
         //     }
         // }
-
         // if (requestStatus === 'resolved') {
         //     navigation.reset({
         //         index: 0,
@@ -88,7 +83,7 @@ export const MemberForm = ({ navigation, route }) => {
                     </View>
                 )}
             </Formik>
-        </ScrollView >
+        </ScrollView>
     );
 };
 

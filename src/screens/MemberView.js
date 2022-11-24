@@ -3,13 +3,11 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
-import { deleteMember, resetMembersStatus } from '../slices/member';
 import { logout } from '../helpers/session';
 import { useMemberMutation, useTasksList } from '../react-query/APIHooks';
 import { memberTaskList } from '../helpers/utility';
 
 export const MemberView = ({ navigation, route }) => {
-    const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
     const taskList = useTasksList(token);
     const { memberName, memberId } = route.params;
@@ -46,7 +44,6 @@ export const MemberView = ({ navigation, route }) => {
         //         dispatch(resetMembersStatus());
         //     }
         // }
-
         // if (requestStatus === 'resolved') {
         //     navigation.reset({
         //         index: 0,

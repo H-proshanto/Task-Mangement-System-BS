@@ -1,5 +1,5 @@
-import axios from "axios";
-import { BASE_URL } from "../config";
+import axios from 'axios';
+import { BASE_URL } from '../config';
 
 export const getAllMembers = async (params) => {
     const apiSubDirectory = 'members';

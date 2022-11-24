@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useSelector } from 'react-redux';
-import { dropDownMemberList } from '../slices/member';
+import { dropDownMemberList } from '../helpers/utility';
+import { useMembersList, useTasksList } from '../react-query/APIHooks';
 
 export const DropDown = ({ memberId, setMemberId }) => {
     const [isFocus, setIsFocus] = useState(false);
-    const data = dropDownMemberList(useSelector((state) => state.member.membersList));
+    const token = useSelector((state) => state.user.token);
+    const taskQuery = useTasksList(token);
+    const taskList = taskQuery?.data;
+    const memberList = useMembersList(token, taskList);
+    const data = dropDownMemberList(memberList.data);
 
     return (
         <View style={styles.container}>

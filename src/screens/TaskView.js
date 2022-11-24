@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
-import { deleteTask, resetTaskStatus } from '../slices/task';
 import { logout } from '../helpers/session';
+import { useTaskMutation } from '../react-query/APIHooks';
 
 export const TaskView = ({ navigation, route }) => {
-    const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
-    const requestStatus = useSelector((state) => state.task.status);
-    const errorMessage = useSelector((state) => state.task.error);
     const { title, description, todoId, memberName, memberId } = route.params;
-
+    const { mutate, status } = useTaskMutation(token, todoId);
 
     const confimationWindow = () => {
         Alert.alert('Are you sure you want to delete this task', '', [
@@ -19,7 +16,7 @@ export const TaskView = ({ navigation, route }) => {
                 text: 'Confirm',
                 style: 'destructive',
                 onPress: () => {
-                    dispatch(deleteTask({ token, taskId: todoId }));
+                    mutate();
                 },
             },
             {
@@ -42,14 +39,13 @@ export const TaskView = ({ navigation, route }) => {
         //         dispatch(resetTaskStatus());
         //     }
         // }
-
         // if (requestStatus === 'resolved') {
         //     navigation.reset({
         //         index: 0,
         //         routes: [{ name: 'DashBoard' }],
         //     });
         // }
-    }, [requestStatus]);
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -90,7 +86,7 @@ export const TaskView = ({ navigation, route }) => {
                     buttonStyle={styles.deleteButton}
                     textStyle={styles.editText}
                     onPress={confimationWindow}
-                    isLoading={requestStatus !== 'idle'}
+                    isLoading={status !== 'idle'}
                     loaderStyle={styles.loaderStyle}
                     loaderSize={31}
                 />

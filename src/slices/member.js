@@ -8,45 +8,6 @@ const initialState = {
     error: '',
 };
 
-export const addNewMember = createAsyncThunk('task/addNewMember', async (params) => {
-    const apiSubDirectory = 'members';
-    const apiDirectory = 'private';
-    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/`;
-    await axios({
-        method: 'POST',
-        url,
-        headers: { Authorization: `Bearer ${params.token}`, 'Content-Type': 'application/json' },
-        data: {
-            name: params.memberName,
-        },
-    });
-});
-
-export const updateMember = createAsyncThunk('task/updateMember', async (params) => {
-    const apiSubDirectory = 'members';
-    const apiDirectory = 'private';
-    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/${params.memberId}`;
-    await axios({
-        method: 'PATCH',
-        url,
-        headers: { Authorization: `Bearer ${params.token}`, 'Content-Type': 'application/json' },
-        data: {
-            name: params.memberName,
-        },
-    });
-});
-
-export const deleteMember = createAsyncThunk('task/deleteMember', async (params) => {
-    const apiSubDirectory = 'members';
-    const apiDirectory = 'private';
-    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/${params.memberId}`;
-    await axios({
-        method: 'DELETE',
-        url,
-        headers: { Authorization: `Bearer ${params.token}` },
-    });
-});
-
 export const dropDownMemberList = (memberList) => {
     const formattedMemberList = memberList.map((member) => {
         return {
@@ -58,10 +19,6 @@ export const dropDownMemberList = (memberList) => {
     return formattedMemberList;
 };
 
-export const memberTaskList = (memberId, taskList) => {
-    return taskList.filter((task) => task.memberId === memberId);
-};
-
 export const memberSlice = createSlice({
     name: 'member',
     initialState,
@@ -70,42 +27,6 @@ export const memberSlice = createSlice({
         resetMembersStatus: (state) => {
             return { ...state, status: 'idle' };
         },
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(addNewMember.pending, (state) => {
-                state.status = 'running';
-            })
-            .addCase(addNewMember.fulfilled, (state) => {
-                state.error = '';
-                state.status = 'resolved';
-            })
-            .addCase(addNewMember.rejected, (state, action) => {
-                state.error = action.error?.message;
-                state.status = 'error';
-            })
-            .addCase(updateMember.pending, (state) => {
-                state.status = 'running';
-            })
-            .addCase(updateMember.fulfilled, (state) => {
-                state.error = '';
-                state.status = 'resolved';
-            })
-            .addCase(updateMember.rejected, (state, action) => {
-                state.error = action.error?.message;
-                state.status = 'error';
-            })
-            .addCase(deleteMember.pending, (state) => {
-                state.status = 'running';
-            })
-            .addCase(deleteMember.fulfilled, (state) => {
-                state.error = '';
-                state.status = 'resolved';
-            })
-            .addCase(deleteMember.rejected, (state, action) => {
-                state.error = action.error?.message;
-                state.status = 'error';
-            });
     },
 });
 

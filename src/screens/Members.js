@@ -7,17 +7,13 @@ import { logout } from '../helpers/session';
 import { useQuery } from '@tanstack/react-query';
 import { getAllMembers } from '../react-query/memberAPI';
 import { getAllTasks } from '../react-query/taskAPI';
+import { useMembersList, useTaskList, useTasksList } from '../react-query/APIHooks';
 
 export const Members = ({ navigation }) => {
     const token = useSelector((state) => state.user.token);
-    const requestStatus = useSelector((state) => state.member.status);
-    const errorMessage = useSelector((state) => state.member.error);
-    const dispatch = useDispatch();
-    const { data, fetchStatus } = useQuery({
-        queryKey: ['MemberList'],
-        queryFn: () => getAllMembers({ token, taskList: taskQuery.data.tasks }),
-    });
-    console.log(data);
+    const taskQuery = useTasksList(token);
+    const taskList = taskQuery?.data;
+    const { data, fetchStatus } = useMembersList(token, taskList);
 
     useEffect(() => {
         // if (requestStatus === 'error') {
@@ -39,11 +35,11 @@ export const Members = ({ navigation }) => {
         // if (requestStatus === 'resolved' || requestStatus === 'recieved') {
         //     setTimeout(() => dispatch(resetMembersStatus()), 600);
         // }
-    }, [requestStatus]);
+    }, []);
 
     return (
         <>
-            {fetchStatus === 'fetching' ? (
+            {fetchStatus === 'fetching' || taskQuery.fetchStatus === 'fetching' ? (
                 <ActivityIndicator size={50} color="#f5054d" style={styles.loader} />
             ) : (
                 <>

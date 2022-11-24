@@ -3,17 +3,19 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
-import { deleteMember, memberTaskList, resetMembersStatus } from '../slices/member';
+import { deleteMember, resetMembersStatus } from '../slices/member';
 import { logout } from '../helpers/session';
+import { useMemberMutation, useTasksList } from '../react-query/APIHooks';
+import { memberTaskList } from '../helpers/utility';
 
 export const MemberView = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
-    const taskList = useSelector((state) => state.task.taskList.tasks);
-    const requestStatus = useSelector((state) => state.member.status);
-    const errorMessage = useSelector((state) => state.member.error);
+    const taskList = useTasksList(token);
     const { memberName, memberId } = route.params;
-    const data = memberTaskList(memberId, taskList);
+    const { mutate, status } = useMemberMutation(token, memberId);
+
+    const data = memberTaskList(memberId, taskList.data);
 
     const confimationWindow = () => {
         Alert.alert('Are you sure you want to delete this task', '', [
@@ -21,7 +23,7 @@ export const MemberView = ({ navigation, route }) => {
                 text: 'Confirm',
                 style: 'destructive',
                 onPress: () => {
-                    dispatch(deleteMember({ token, memberId }));
+                    mutate();
                 },
             },
             {
@@ -31,27 +33,27 @@ export const MemberView = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        if (requestStatus === 'error') {
-            if (errorMessage.includes('401')) {
-                Alert.alert('An issue occured', 'Session expired. Please Log In again');
-                logout(dispatch, navigation);
-            } else {
-                Alert.alert('An issue occured', errorMessage, [
-                    {
-                        text: 'Okay',
-                    },
-                ]);
-                dispatch(resetMembersStatus());
-            }
-        }
+        // if (requestStatus === 'error') {
+        //     if (errorMessage.includes('401')) {
+        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
+        //         logout(dispatch, navigation);
+        //     } else {
+        //         Alert.alert('An issue occured', errorMessage, [
+        //             {
+        //                 text: 'Okay',
+        //             },
+        //         ]);
+        //         dispatch(resetMembersStatus());
+        //     }
+        // }
 
-        if (requestStatus === 'resolved') {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'DashBoard' }],
-            });
-        }
-    }, [requestStatus]);
+        // if (requestStatus === 'resolved') {
+        //     navigation.reset({
+        //         index: 0,
+        //         routes: [{ name: 'DashBoard' }],
+        //     });
+        // }
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -82,7 +84,7 @@ export const MemberView = ({ navigation, route }) => {
                     buttonStyle={styles.deleteButton}
                     textStyle={styles.editText}
                     onPress={confimationWindow}
-                    isLoading={requestStatus !== 'idle'}
+                    isLoading={status !== 'idle'}
                     loaderStyle={styles.loaderStyle}
                     loaderSize={32}
                 />

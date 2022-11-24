@@ -1,4 +1,4 @@
-import { addNewMember, updateMember } from '../slices/member';
+import { addNewMember, updateMember } from '../react-query/memberAPI';
 import { addNewTask, updateTask } from '../slices/task';
 
 export const onPressMemberForm = (view) => {

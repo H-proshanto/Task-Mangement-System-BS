@@ -12,6 +12,7 @@ export const TaskView = ({ navigation, route }) => {
     const errorMessage = useSelector((state) => state.task.error);
     const { title, description, todoId, memberName, memberId } = route.params;
 
+
     const confimationWindow = () => {
         Alert.alert('Are you sure you want to delete this task', '', [
             {
@@ -28,26 +29,26 @@ export const TaskView = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        if (requestStatus === 'error') {
-            if (errorMessage.includes('401')) {
-                Alert.alert('An issue occured', 'Session expired. Please Log In again');
-                logout(dispatch, navigation);
-            } else {
-                Alert.alert('An issue occured', errorMessage, [
-                    {
-                        text: 'Okay',
-                    },
-                ]);
-                dispatch(resetTaskStatus());
-            }
-        }
+        // if (requestStatus === 'error') {
+        //     if (errorMessage.includes('401')) {
+        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
+        //         logout(dispatch, navigation);
+        //     } else {
+        //         Alert.alert('An issue occured', errorMessage, [
+        //             {
+        //                 text: 'Okay',
+        //             },
+        //         ]);
+        //         dispatch(resetTaskStatus());
+        //     }
+        // }
 
-        if (requestStatus === 'resolved') {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'DashBoard' }],
-            });
-        }
+        // if (requestStatus === 'resolved') {
+        //     navigation.reset({
+        //         index: 0,
+        //         routes: [{ name: 'DashBoard' }],
+        //     });
+        // }
     }, [requestStatus]);
 
     return (

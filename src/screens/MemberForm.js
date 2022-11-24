@@ -9,38 +9,45 @@ import { resetMembersStatus } from '../slices/member';
 import { onPressMemberForm } from '../helpers/MethodSelector';
 import { logout } from '../helpers/session';
 import { validateMemberForm } from '../helpers/validation';
+import { useMutation } from '@tanstack/react-query';
+import { addNewMember } from '../react-query/memberAPI';
+import { useState } from 'react';
+import { useMemberFormMutation } from '../react-query/APIHooks';
 
 export const MemberForm = ({ navigation, route }) => {
+    const [memberName, setMemberName] = useState(route.params?.memberName);
     const view = route.params?.view;
-    const memberName = route.params?.memberName;
     const memberId = route.params?.memberId;
     const token = useSelector((state) => state.user.token);
-    const requestStatus = useSelector((state) => state.member.status);
-    const errorMessage = useSelector((state) => state.member.error);
+    const { mutate, status } = useMemberFormMutation(view, token, memberName, memberId);
     const headerTitle = view === 'create' ? 'Add member' : 'Update member';
-    const dispatch = useDispatch();
+
+    const onFormSubmit = (values) => {
+        setMemberName(values.memberName);
+        setTimeout(mutate, 0);
+    };
 
     useEffect(() => {
-        if (requestStatus === 'error') {
-            if (errorMessage.includes('401')) {
-                Alert.alert('An issue occured', 'Session expired. Please Log In again');
-                logout(dispatch, navigation);
-            } else {
-                Alert.alert('An issue occured', errorMessage, [
-                    {
-                        text: 'Okay',
-                    },
-                ]);
-                dispatch(resetMembersStatus());
-            }
-        }
+        // if (requestStatus === 'error') {
+        //     if (errorMessage.includes('401')) {
+        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
+        //         logout(dispatch, navigation);
+        //     } else {
+        //         Alert.alert('An issue occured', errorMessage, [
+        //             {
+        //                 text: 'Okay',
+        //             },
+        //         ]);
+        //         dispatch(resetMembersStatus());
+        //     }
+        // }
 
-        if (requestStatus === 'resolved') {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'DashBoard' }],
-            });
-        }
+        // if (requestStatus === 'resolved') {
+        //     navigation.reset({
+        //         index: 0,
+        //         routes: [{ name: 'DashBoard' }],
+        //     });
+        // }
     });
 
     return (
@@ -50,15 +57,7 @@ export const MemberForm = ({ navigation, route }) => {
             </View>
             <Formik
                 initialValues={{ memberName: memberName || '' }}
-                onSubmit={(values) =>
-                    dispatch(
-                        onPressMemberForm(view)({
-                            token,
-                            memberName: values.memberName,
-                            memberId,
-                        }),
-                    )
-                }
+                onSubmit={(values) => onFormSubmit(values)}
                 validate={validateMemberForm}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -81,7 +80,7 @@ export const MemberForm = ({ navigation, route }) => {
                                 buttonStyle={styles.button}
                                 textStyle={styles.buttonText}
                                 onPress={handleSubmit}
-                                isLoading={requestStatus !== 'idle'}
+                                isLoading={status !== 'idle'}
                                 loaderSize={30}
                                 loaderStyle={styles.loaderStyle}
                             />
@@ -89,7 +88,7 @@ export const MemberForm = ({ navigation, route }) => {
                     </View>
                 )}
             </Formik>
-        </ScrollView>
+        </ScrollView >
     );
 };
 

@@ -11,5 +11,5 @@ export const getAllTasks = async (params) => {
         headers: { Authorization: `Bearer ${params.token}` },
     });
 
-    return response.data;
+    return response.data.tasks;
 };

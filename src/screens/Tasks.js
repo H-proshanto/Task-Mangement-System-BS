@@ -6,17 +6,11 @@ import { resetTaskStatus } from '../slices/task';
 import { logout } from '../helpers/session';
 import { useQuery } from '@tanstack/react-query';
 import { getAllTasks } from '../react-query/taskAPI';
+import { useTaskList, useTasksList } from '../react-query/APIHooks';
 
 export const Tasks = ({ navigation }) => {
     const token = useSelector((state) => state.user.token);
-    const { data, fetchStatus } = useQuery({
-        queryKey: ['TaskList'],
-        queryFn: () => getAllTasks({ token }),
-    });
-    const user = useSelector((state) => state.user);
-    const requestStatus = useSelector((state) => state.task.status);
-    const errorMessage = useSelector((state) => state.task.error);
-    const dispatch = useDispatch();
+    const { data, fetchStatus } = useTasksList(token);
 
     useEffect(() => {
         // if (requestStatus === 'error') {
@@ -35,7 +29,7 @@ export const Tasks = ({ navigation }) => {
         //     }
         // }
 
-    }, [requestStatus]);
+    }, []);
 
     return (
         <>
@@ -63,7 +57,7 @@ export const Tasks = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TaskList navigation={navigation} data={data.tasks} />
+                        <TaskList navigation={navigation} data={data} />
                     </View>
                 </>
             )}

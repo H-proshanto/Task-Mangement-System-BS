@@ -2,41 +2,44 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
-import { getAllTasks, resetTaskStatus } from '../slices/task';
+import { resetTaskStatus } from '../slices/task';
 import { logout } from '../helpers/session';
+import { useQuery } from '@tanstack/react-query';
+import { getAllTasks } from '../react-query/taskAPI';
 
 export const Tasks = ({ navigation }) => {
-    const taskList = useSelector((state) => state.task.taskList.tasks);
+    const token = useSelector((state) => state.user.token);
+    const { data, fetchStatus } = useQuery({
+        queryKey: ['TaskList'],
+        queryFn: () => getAllTasks({ token }),
+    });
     const user = useSelector((state) => state.user);
     const requestStatus = useSelector((state) => state.task.status);
     const errorMessage = useSelector((state) => state.task.error);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (requestStatus === 'error') {
-            if (errorMessage.includes('401')) {
-                Alert.alert('An issue occured', 'Session expired. Please Log In again');
-                logout(dispatch, navigation);
-            } else {
-                Alert.alert('An issue occured', errorMessage, [
-                    {
-                        onPress: () => {
-                            dispatch(getAllTasks(user));
-                        },
-                        text: 'Retry',
-                    },
-                ]);
-            }
-        }
+        // if (requestStatus === 'error') {
+        //     if (errorMessage.includes('401')) {
+        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
+        //         logout(dispatch, navigation);
+        //     } else {
+        //         Alert.alert('An issue occured', errorMessage, [
+        //             {
+        //                 onPress: () => {
+        //                     dispatch(getAllTasks(user));
+        //                 },
+        //                 text: 'Retry',
+        //             },
+        //         ]);
+        //     }
+        // }
 
-        if (requestStatus === 'resolved' || requestStatus === 'recieved') {
-            setTimeout(() => dispatch(resetTaskStatus()), 550);
-        }
     }, [requestStatus]);
 
     return (
         <>
-            {requestStatus !== 'idle' ? (
+            {fetchStatus === 'fetching' ? (
                 <ActivityIndicator size={50} color="#f5054d" style={styles.loader} />
             ) : (
                 <>
@@ -60,7 +63,7 @@ export const Tasks = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TaskList navigation={navigation} data={taskList} />
+                        <TaskList navigation={navigation} data={data.tasks} />
                     </View>
                 </>
             )}

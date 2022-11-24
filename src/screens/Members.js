@@ -2,41 +2,48 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
-import { getAllMembers, resetMembersStatus } from '../slices/member';
+import { resetMembersStatus } from '../slices/member';
 import { logout } from '../helpers/session';
+import { useQuery } from '@tanstack/react-query';
+import { getAllMembers } from '../react-query/memberAPI';
+import { getAllTasks } from '../react-query/taskAPI';
 
 export const Members = ({ navigation }) => {
-    const memberList = useSelector((state) => state.member.membersList);
     const token = useSelector((state) => state.user.token);
     const requestStatus = useSelector((state) => state.member.status);
     const errorMessage = useSelector((state) => state.member.error);
     const dispatch = useDispatch();
+    const { data, fetchStatus } = useQuery({
+        queryKey: ['MemberList'],
+        queryFn: () => getAllMembers({ token, taskList: taskQuery.data.tasks }),
+    });
+    console.log(data);
 
     useEffect(() => {
-        if (requestStatus === 'error') {
-            if (errorMessage.includes('401')) {
-                Alert.alert('An issue occured', 'Session expired. Please Log In again');
-                logout(dispatch, navigation);
-            } else {
-                Alert.alert('An issue occured', errorMessage, [
-                    {
-                        onPress: () => {
-                            dispatch(getAllMembers(token));
-                        },
-                        text: 'Retry',
-                    },
-                ]);
-            }
-        }
+        // if (requestStatus === 'error') {
+        //     if (errorMessage.includes('401')) {
+        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
+        //         logout(dispatch, navigation);
+        //     } else {
+        //         Alert.alert('An issue occured', errorMessage, [
+        //             {
+        //                 onPress: () => {
+        //                     dispatch(getAllMembers(token));
+        //                 },
+        //                 text: 'Retry',
+        //             },
+        //         ]);
+        //     }
+        // }
 
-        if (requestStatus === 'resolved' || requestStatus === 'recieved') {
-            setTimeout(() => dispatch(resetMembersStatus()), 600);
-        }
+        // if (requestStatus === 'resolved' || requestStatus === 'recieved') {
+        //     setTimeout(() => dispatch(resetMembersStatus()), 600);
+        // }
     }, [requestStatus]);
 
     return (
         <>
-            {requestStatus !== 'idle' ? (
+            {fetchStatus === 'fetching' ? (
                 <ActivityIndicator size={50} color="#f5054d" style={styles.loader} />
             ) : (
                 <>
@@ -60,7 +67,7 @@ export const Members = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <MemberList navigation={navigation} data={memberList} />
+                        <MemberList navigation={navigation} data={data} />
                     </View>
                 </>
             )}

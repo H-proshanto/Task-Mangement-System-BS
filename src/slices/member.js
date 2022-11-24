@@ -8,33 +8,6 @@ const initialState = {
     error: '',
 };
 
-export const getAllMembers = createAsyncThunk('member/getAllMembers', async (params) => {
-    const apiSubDirectory = 'members';
-    const apiDirectory = 'private';
-    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/`;
-    const response = await axios({
-        method: 'GET',
-        url,
-        headers: { Authorization: `Bearer ${params.token}` },
-    });
-    const memberList = response.data.members;
-
-    const newMemberList = memberList.map((member) => {
-        const taskCount = params.taskList.reduce((count, task) => {
-            if (member.id === task.memberId) {
-                count++;
-            }
-
-            return count;
-        }, 0);
-
-        member.taskCount = taskCount;
-        return member;
-    });
-
-    return newMemberList;
-});
-
 export const addNewMember = createAsyncThunk('task/addNewMember', async (params) => {
     const apiSubDirectory = 'members';
     const apiDirectory = 'private';
@@ -100,18 +73,6 @@ export const memberSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getAllMembers.pending, (state) => {
-                state.status = 'running';
-            })
-            .addCase(getAllMembers.fulfilled, (state, action) => {
-                state.membersList = action.payload;
-                state.error = '';
-                state.status = 'recieved';
-            })
-            .addCase(getAllMembers.rejected, (state, action) => {
-                state.error = action.error?.message;
-                state.status = 'error';
-            })
             .addCase(addNewMember.pending, (state) => {
                 state.status = 'running';
             })

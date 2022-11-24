@@ -8,19 +8,6 @@ const initialState = {
     error: '',
 };
 
-export const getAllTasks = createAsyncThunk('task/getAllTasks', async (params) => {
-    const apiSubDirectory = 'tasks';
-    const apiDirectory = 'private';
-    const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/`;
-    const response = await axios({
-        method: 'GET',
-        url,
-        headers: { Authorization: `Bearer ${params.token}` },
-    });
-
-    return response.data;
-});
-
 export const getSingleTask = async (params) => {
     const apiSubDirectory = 'tasks';
     const apiDirectory = 'private';
@@ -91,18 +78,6 @@ export const taskSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getAllTasks.pending, (state) => {
-                state.status = 'running';
-            })
-            .addCase(getAllTasks.fulfilled, (state, action) => {
-                state.taskList = action.payload;
-                state.error = '';
-                state.status = 'recieved';
-            })
-            .addCase(getAllTasks.rejected, (state, action) => {
-                state.error = action.error?.message;
-                state.status = 'error';
-            })
             .addCase(addNewTask.pending, (state) => {
                 state.status = 'running';
             })

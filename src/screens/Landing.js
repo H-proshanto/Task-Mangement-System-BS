@@ -40,6 +40,7 @@ export const Landing = ({ navigation }) => {
                     buttonStyle={styles.registrationBtn}
                     textStyle={styles.registrationText}
                     onPress={() => navigation.navigate('Registration')}
+                    disabled={requestStatus !== 'idle'}
                 />
             </View>
         </ScrollView>

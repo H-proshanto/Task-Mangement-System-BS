@@ -7,9 +7,11 @@ import { TabBarIcon } from './TabBarIcon';
 
 const Tab = createBottomTabNavigator();
 
-export const Tabs = () => {
+export const Tabs = ({ route }) => {
+    const initialRoute = route?.params?.screen;
     return (
         <Tab.Navigator
+            initialRouteName={initialRoute || 'Home'}
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,

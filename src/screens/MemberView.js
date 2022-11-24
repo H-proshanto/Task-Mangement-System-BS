@@ -44,13 +44,13 @@ export const MemberView = ({ navigation, route }) => {
         //         dispatch(resetMembersStatus());
         //     }
         // }
-        // if (requestStatus === 'resolved') {
-        //     navigation.reset({
-        //         index: 0,
-        //         routes: [{ name: 'DashBoard' }],
-        //     });
-        // }
-    }, []);
+        if (status === 'success') {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard', params: { screen: 'Members' } }],
+            });
+        }
+    });
 
     return (
         <View style={styles.container}>

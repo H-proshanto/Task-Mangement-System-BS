@@ -39,13 +39,13 @@ export const TaskView = ({ navigation, route }) => {
         //         dispatch(resetTaskStatus());
         //     }
         // }
-        // if (requestStatus === 'resolved') {
-        //     navigation.reset({
-        //         index: 0,
-        //         routes: [{ name: 'DashBoard' }],
-        //     });
-        // }
-    }, []);
+        if (status === 'success') {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard', params: { screen: 'Tasks' } }],
+            });
+        }
+    },);
 
     return (
         <View style={styles.container}>

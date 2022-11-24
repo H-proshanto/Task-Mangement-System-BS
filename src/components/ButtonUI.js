@@ -10,10 +10,11 @@ export const ButtonUI = ({
     isLoading = false,
     loaderStyle,
     loaderSize,
+    disabled,
 }) => {
     return (
         <View style={bodyStyle}>
-            <TouchableOpacity disabled={isLoading} onPress={onPress}>
+            <TouchableOpacity disabled={isLoading || disabled} onPress={onPress}>
                 <View style={buttonStyle}>
                     {isLoading ? (
                         <ActivityIndicator size={loaderSize} style={loaderStyle} color="#ffffff" />

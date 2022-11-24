@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
@@ -17,7 +17,6 @@ export const TaskForm = ({ navigation, route }) => {
     const view = route.params?.view;
     const taskId = route.params?.todoId;
     const token = useSelector((state) => state.user.token);
-    const dispatch = useDispatch();
     const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const { mutate, status } = useTaskFormMutation(
         view,
@@ -52,12 +51,12 @@ export const TaskForm = ({ navigation, route }) => {
         //         dispatch(resetTaskStatus());
         //     }
         // }
-        // if (requestStatus === 'resolved') {
-        //     navigation.reset({
-        //         index: 0,
-        //         routes: [{ name: 'DashBoard' }],
-        //     });
-        // }
+        if (status === 'success') {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashBoard', params: { screen: 'Tasks' } }],
+            });
+        }
     });
 
     return (

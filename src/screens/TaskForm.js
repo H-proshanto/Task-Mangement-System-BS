@@ -8,17 +8,17 @@ import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
 import { logout } from '../helpers/session';
 import { validateTaskForm } from '../helpers/validation';
-import { useTaskFormMutation } from '../react-query/APIHooks';
+import { useTaskFormMutation } from '../api/APIHooks';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
     const [title, setTitle] = useState(route.params?.title);
     const [description, setDescription] = useState(route.params?.description);
-    const dispatch = useDispatch();
+    const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const view = route.params?.view;
     const taskId = route.params?.todoId;
+    const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
-    const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const { mutate, status, error } = useTaskFormMutation(
         view,
         token,

@@ -1,5 +1,5 @@
-import { addNewMember, updateMember } from '../react-query/memberAPI';
-import { addNewTask, updateTask } from '../react-query/taskAPI';
+import { addNewMember, updateMember } from '../api/memberAPI';
+import { addNewTask, updateTask } from '../api/taskAPI';
 
 export const onPressMemberForm = (view) => {
     if (view === 'create') {

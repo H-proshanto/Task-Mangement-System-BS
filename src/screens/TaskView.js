@@ -3,12 +3,12 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { logout } from '../helpers/session';
-import { useTaskMutation } from '../react-query/APIHooks';
+import { useTaskMutation } from '../api/APIHooks';
 
 export const TaskView = ({ navigation, route }) => {
-    const token = useSelector((state) => state.user.token);
-    const dispatch = useDispatch();
     const { title, description, todoId, memberName, memberId } = route.params;
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.user.token);
     const { mutate, status, error } = useTaskMutation(token, todoId);
 
     const confimationWindow = () => {

@@ -1,9 +1,8 @@
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { onPressMemberForm, onPressTaskForm } from '../helpers/MethodSelector';
+import { queryClient } from './config';
 import { deleteMember, getAllMembers } from './memberAPI';
 import { deleteTask, getAllTasks } from './taskAPI';
-
-export const queryClient = new QueryClient();
 
 export const useTasksList = (token) => {
     return useQuery({
@@ -51,4 +50,4 @@ export const invalidateMemberList = () => {
 
 export const invalidateTaskList = () => {
     queryClient.invalidateQueries({ queryKey: ['TaskList'] });
-}
+};

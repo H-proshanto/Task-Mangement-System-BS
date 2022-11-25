@@ -4,14 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
 import { logout } from '../helpers/session';
-import { useMemberMutation, useTasksList } from '../react-query/APIHooks';
+import { useMemberMutation, useTasksList } from '../api/APIHooks';
 import { memberTaskList } from '../helpers/utility';
 
 export const MemberView = ({ navigation, route }) => {
-    const token = useSelector((state) => state.user.token);
-    const taskList = useTasksList(token);
     const { memberName, memberId } = route.params;
-    const { mutate, status } = useMemberMutation(token, memberId);
+    const token = useSelector((state) => state.user.token);
+    const dispatch = useDispatch()
+    const taskList = useTasksList(token);
+    const { mutate, status, error } = useMemberMutation(token, memberId);
 
     const data = memberTaskList(memberId, taskList.data);
 
@@ -21,7 +22,7 @@ export const MemberView = ({ navigation, route }) => {
                 text: 'Confirm',
                 style: 'destructive',
                 onPress: () => {
-                    mutate();
+                    setTimeout(mutate, 200);
                 },
             },
             {
@@ -31,19 +32,18 @@ export const MemberView = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        // if (requestStatus === 'error') {
-        //     if (errorMessage.includes('401')) {
-        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
-        //         logout(dispatch, navigation);
-        //     } else {
-        //         Alert.alert('An issue occured', errorMessage, [
-        //             {
-        //                 text: 'Okay',
-        //             },
-        //         ]);
-        //         dispatch(resetMembersStatus());
-        //     }
-        // }
+        if (status === 'error') {
+            if (error?.message.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', error?.message, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+            }
+        }
         if (status === 'success') {
             navigation.reset({
                 index: 0,
@@ -81,7 +81,7 @@ export const MemberView = ({ navigation, route }) => {
                     buttonStyle={styles.deleteButton}
                     textStyle={styles.editText}
                     onPress={confimationWindow}
-                    isLoading={status !== 'idle'}
+                    isLoading={status === 'loading' || status === 'success'}
                     loaderStyle={styles.loaderStyle}
                     loaderSize={32}
                 />

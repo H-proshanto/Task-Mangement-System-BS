@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../helpers/session';
 
 export const TopNavbar = ({ navigation }) => {
+    const [isDisabled, setIsDisabled] = useState(false);
     const username = useSelector((state) => state.user.info.name);
     const routesArray = navigation.getState().routes.map((route) => route.name);
     const shouldShowBackBtn = routesArray.some((route) => {
@@ -37,8 +38,10 @@ export const TopNavbar = ({ navigation }) => {
                 <Text style={styles.username}>{username}</Text>
                 <TouchableOpacity
                     onPress={() => {
+                        setIsDisabled(true);
                         logout(dispatch, navigation);
                     }}
+                    disabled={isDisabled}
                 >
                     <Image style={styles.logout} source={require('../assets/logout-icon.png')} />
                 </TouchableOpacity>

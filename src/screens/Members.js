@@ -1,16 +1,15 @@
-import { QueryClient } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
 import { logout } from '../helpers/session';
-import { invalidateMemberList, useMembersList, useTasksList } from '../react-query/APIHooks';
+import { invalidateMemberList, useMembersList, useTasksList } from '../api/APIHooks';
 
 export const Members = ({ navigation }) => {
+    const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
     const taskQuery = useTasksList(token);
     const taskList = taskQuery?.data;
-    const dispatch = useDispatch();
     const { data, fetchStatus, status, error } = useMembersList(token, taskList);
 
     useEffect(() => {
@@ -29,7 +28,7 @@ export const Members = ({ navigation }) => {
                 ]);
             }
         }
-    });
+    }, [status]);
 
     return (
         <>

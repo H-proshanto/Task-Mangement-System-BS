@@ -2,20 +2,21 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { InputField } from '../components/InputField';
 import { logout } from '../helpers/session';
 import { validateMemberForm } from '../helpers/validation';
 import { useState } from 'react';
-import { useMemberFormMutation } from '../react-query/APIHooks';
+import { useMemberFormMutation } from '../api/APIHooks';
 
 export const MemberForm = ({ navigation, route }) => {
     const [memberName, setMemberName] = useState(route.params?.memberName);
     const view = route.params?.view;
     const memberId = route.params?.memberId;
+    const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
-    const { mutate, status } = useMemberFormMutation(view, token, memberName, memberId);
+    const { mutate, status, error } = useMemberFormMutation(view, token, memberName, memberId);
     const headerTitle = view === 'create' ? 'Add member' : 'Update member';
 
     const onFormSubmit = (values) => {
@@ -24,26 +25,25 @@ export const MemberForm = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        // if (requestStatus === 'error') {
-        //     if (errorMessage.includes('401')) {
-        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
-        //         logout(dispatch, navigation);
-        //     } else {
-        //         Alert.alert('An issue occured', errorMessage, [
-        //             {
-        //                 text: 'Okay',
-        //             },
-        //         ]);
-        //         dispatch(resetMembersStatus());
-        //     }
-        // }
+        if (status === 'error') {
+            if (error?.message.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', error?.message, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+            }
+        }
         if (status === 'success') {
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'DashBoard', params: { screen: 'Members' } }],
             });
         }
-    });
+    }, [status]);
 
     return (
         <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
@@ -75,7 +75,7 @@ export const MemberForm = ({ navigation, route }) => {
                                 buttonStyle={styles.button}
                                 textStyle={styles.buttonText}
                                 onPress={handleSubmit}
-                                isLoading={status !== 'idle'}
+                                isLoading={status === 'loading' || status === 'success'}
                                 loaderSize={30}
                                 loaderStyle={styles.loaderStyle}
                             />

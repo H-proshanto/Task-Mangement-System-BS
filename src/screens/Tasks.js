@@ -3,11 +3,11 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
 import { logout } from '../helpers/session';
-import { invalidateMemberList, invalidateTaskList, useTasksList } from '../react-query/APIHooks';
+import { invalidateTaskList, useTasksList } from '../api/APIHooks';
 
 export const Tasks = ({ navigation }) => {
-    const token = useSelector((state) => state.user.token);
     const dispatch = useDispatch();
+    const token = useSelector((state) => state.user.token);
     const { data, fetchStatus, status, error } = useTasksList(token);
 
     useEffect(() => {

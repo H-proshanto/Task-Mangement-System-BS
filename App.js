@@ -8,6 +8,7 @@ import { persistor, store } from './src/app/store';
 import { AppLoader } from './src/components/AppLoader';
 import { Tabs } from './src/components/Tabs';
 import { TopNavbar } from './src/components/TopNavbar';
+import { queryClient } from './src/react-query/APIHooks';
 import { Landing } from './src/screens/Landing';
 import { MemberForm } from './src/screens/MemberForm';
 import { MemberView } from './src/screens/MemberView';
@@ -16,7 +17,6 @@ import { TaskForm } from './src/screens/TaskForm';
 import { TaskView } from './src/screens/TaskView';
 
 const Stack = createStackNavigator();
-const queryClient = new QueryClient();
 
 export default function App() {
     const [initialRoute, setInitialRoute] = useState('Landing');

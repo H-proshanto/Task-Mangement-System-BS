@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { logout } from '../helpers/session';
 import { useTaskMutation } from '../react-query/APIHooks';
 
 export const TaskView = ({ navigation, route }) => {
     const token = useSelector((state) => state.user.token);
+    const dispatch = useDispatch();
     const { title, description, todoId, memberName, memberId } = route.params;
-    const { mutate, status } = useTaskMutation(token, todoId);
+    const { mutate, status, error } = useTaskMutation(token, todoId);
 
     const confimationWindow = () => {
         Alert.alert('Are you sure you want to delete this task', '', [
@@ -16,7 +17,7 @@ export const TaskView = ({ navigation, route }) => {
                 text: 'Confirm',
                 style: 'destructive',
                 onPress: () => {
-                    mutate();
+                    setTimeout(mutate, 200);
                 },
             },
             {
@@ -26,19 +27,18 @@ export const TaskView = ({ navigation, route }) => {
     };
 
     useEffect(() => {
-        // if (requestStatus === 'error') {
-        //     if (errorMessage.includes('401')) {
-        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
-        //         logout(dispatch, navigation);
-        //     } else {
-        //         Alert.alert('An issue occured', errorMessage, [
-        //             {
-        //                 text: 'Okay',
-        //             },
-        //         ]);
-        //         dispatch(resetTaskStatus());
-        //     }
-        // }
+        if (status === 'error') {
+            if (error?.message.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', error?.message, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+            }
+        }
         if (status === 'success') {
             navigation.reset({
                 index: 0,
@@ -86,7 +86,7 @@ export const TaskView = ({ navigation, route }) => {
                     buttonStyle={styles.deleteButton}
                     textStyle={styles.editText}
                     onPress={confimationWindow}
-                    isLoading={status !== 'idle'}
+                    isLoading={status === 'loading' || status === 'success'}
                     loaderStyle={styles.loaderStyle}
                     loaderSize={31}
                 />

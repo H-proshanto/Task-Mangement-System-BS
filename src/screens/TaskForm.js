@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
@@ -14,11 +14,12 @@ export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
     const [title, setTitle] = useState(route.params?.title);
     const [description, setDescription] = useState(route.params?.description);
+    const dispatch = useDispatch();
     const view = route.params?.view;
     const taskId = route.params?.todoId;
     const token = useSelector((state) => state.user.token);
     const headerTitle = view === 'create' ? 'Add task' : 'Update task';
-    const { mutate, status } = useTaskFormMutation(
+    const { mutate, status, error } = useTaskFormMutation(
         view,
         token,
         title,
@@ -30,7 +31,7 @@ export const TaskForm = ({ navigation, route }) => {
     const onFormSubmit = (values) => {
         setTitle(values.title);
         setDescription(values.description);
-        setTimeout(mutate, 0);
+        setTimeout(mutate, 200);
     };
 
     useEffect(() => {
@@ -38,19 +39,18 @@ export const TaskForm = ({ navigation, route }) => {
     }, []);
 
     useEffect(() => {
-        // if (requestStatus === 'error') {
-        //     if (errorMessage.includes('401')) {
-        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
-        //         logout(dispatch, navigation);
-        //     } else {
-        //         Alert.alert('An issue occured', errorMessage, [
-        //             {
-        //                 text: 'Okay',
-        //             },
-        //         ]);
-        //         dispatch(resetTaskStatus());
-        //     }
-        // }
+        if (status === 'error') {
+            if (error?.message.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', error?.message, [
+                    {
+                        text: 'Okay',
+                    },
+                ]);
+            }
+        }
         if (status === 'success') {
             navigation.reset({
                 index: 0,
@@ -101,7 +101,7 @@ export const TaskForm = ({ navigation, route }) => {
                                 buttonStyle={styles.button}
                                 textStyle={styles.buttonText}
                                 onPress={handleSubmit}
-                                isLoading={status !== 'idle'}
+                                isLoading={status === 'loading' || status === 'success'}
                                 loaderSize={30}
                                 loaderStyle={styles.loaderStyle}
                             />

@@ -1,20 +1,24 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { onPressMemberForm, onPressTaskForm } from '../helpers/MethodSelector';
 import { deleteMember, getAllMembers } from './memberAPI';
 import { deleteTask, getAllTasks } from './taskAPI';
+
+export const queryClient = new QueryClient();
 
 export const useTasksList = (token) => {
     return useQuery({
         queryKey: ['TaskList'],
         queryFn: () => getAllTasks({ token }),
+        staleTime: 2500,
     });
 };
 
 export const useMembersList = (token, taskList) => {
     return useQuery({
-        queryKey: ['MemberList'],
+        queryKey: ['MemberList', taskList],
         queryFn: () => getAllMembers({ token, taskList }),
         enabled: !!taskList,
+        staleTime: 2500,
     });
 };
 
@@ -40,3 +44,11 @@ export const useTaskMutation = (token, taskId) => {
         mutationFn: () => deleteTask({ token, taskId }),
     });
 };
+
+export const invalidateMemberList = () => {
+    queryClient.invalidateQueries({ queryKey: ['MemberList'] });
+};
+
+export const invalidateTaskList = () => {
+    queryClient.invalidateQueries({ queryKey: ['TaskList'] });
+}

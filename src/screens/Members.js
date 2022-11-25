@@ -1,36 +1,35 @@
+import { QueryClient } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
 import { logout } from '../helpers/session';
-import { useMembersList, useTasksList } from '../react-query/APIHooks';
+import { invalidateMemberList, useMembersList, useTasksList } from '../react-query/APIHooks';
 
 export const Members = ({ navigation }) => {
     const token = useSelector((state) => state.user.token);
     const taskQuery = useTasksList(token);
     const taskList = taskQuery?.data;
-    const { data, fetchStatus } = useMembersList(token, taskList);
+    const dispatch = useDispatch();
+    const { data, fetchStatus, status, error } = useMembersList(token, taskList);
 
     useEffect(() => {
-        // if (requestStatus === 'error') {
-        //     if (errorMessage.includes('401')) {
-        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
-        //         logout(dispatch, navigation);
-        //     } else {
-        //         Alert.alert('An issue occured', errorMessage, [
-        //             {
-        //                 onPress: () => {
-        //                     dispatch(getAllMembers(token));
-        //                 },
-        //                 text: 'Retry',
-        //             },
-        //         ]);
-        //     }
-        // }
-        // if (requestStatus === 'resolved' || requestStatus === 'recieved') {
-        //     setTimeout(() => dispatch(resetMembersStatus()), 600);
-        // }
-    }, []);
+        if (status === 'error') {
+            if (error?.message.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', error?.message, [
+                    {
+                        onPress: () => {
+                            invalidateMemberList();
+                        },
+                        text: 'Retry',
+                    },
+                ]);
+            }
+        }
+    });
 
     return (
         <>

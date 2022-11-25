@@ -1,30 +1,32 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { TaskList } from '../components/TaskList';
-import { useTasksList } from '../react-query/APIHooks';
+import { logout } from '../helpers/session';
+import { invalidateMemberList, invalidateTaskList, useTasksList } from '../react-query/APIHooks';
 
 export const Tasks = ({ navigation }) => {
     const token = useSelector((state) => state.user.token);
-    const { data, fetchStatus } = useTasksList(token);
+    const dispatch = useDispatch();
+    const { data, fetchStatus, status, error } = useTasksList(token);
 
     useEffect(() => {
-        // if (requestStatus === 'error') {
-        //     if (errorMessage.includes('401')) {
-        //         Alert.alert('An issue occured', 'Session expired. Please Log In again');
-        //         logout(dispatch, navigation);
-        //     } else {
-        //         Alert.alert('An issue occured', errorMessage, [
-        //             {
-        //                 onPress: () => {
-        //                     dispatch(getAllTasks(user));
-        //                 },
-        //                 text: 'Retry',
-        //             },
-        //         ]);
-        //     }
-        // }
-    }, []);
+        if (status === 'error') {
+            if (error?.message.includes('401')) {
+                Alert.alert('An issue occured', 'Session expired. Please Log In again');
+                logout(dispatch, navigation);
+            } else {
+                Alert.alert('An issue occured', error?.message, [
+                    {
+                        onPress: () => {
+                            invalidateTaskList();
+                        },
+                        text: 'Retry',
+                    },
+                ]);
+            }
+        }
+    });
 
     return (
         <>

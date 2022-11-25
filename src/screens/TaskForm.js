@@ -3,20 +3,20 @@ import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTaskFormMutation } from '../api/hooks/taskHooks';
 import { ButtonUI } from '../components/ButtonUI';
 import { DropDown } from '../components/DropDown';
 import { InputField } from '../components/InputField';
 import { logout } from '../helpers/session';
 import { validateTaskForm } from '../helpers/validation';
-import { useTaskFormMutation } from '../api/APIHooks';
 
 export const TaskForm = ({ navigation, route }) => {
     const [memberId, setMemberId] = useState();
     const [title, setTitle] = useState(route.params?.title);
     const [description, setDescription] = useState(route.params?.description);
-    const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const view = route.params?.view;
     const taskId = route.params?.todoId;
+    const headerTitle = view === 'create' ? 'Add task' : 'Update task';
     const dispatch = useDispatch();
     const token = useSelector((state) => state.user.token);
     const { mutate, status, error } = useTaskFormMutation(

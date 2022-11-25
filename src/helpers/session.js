@@ -1,4 +1,4 @@
-import { resetUser } from '../slices/user';
+import { resetUser } from '../model/user';
 
 export const logout = (dispatch, navigation) => {
     navigation.reset({

@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, resetUserStatus } from '../slices/user';
+import { login, resetUserStatus } from '../model/user';
 import { validateLoginForm } from '../helpers/validation';
 import { ButtonUI } from './ButtonUI';
 import { InputField } from './InputField';

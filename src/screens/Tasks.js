@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { invalidateTaskList, useTasksList } from '../api/hooks/taskHooks';
 import { TaskList } from '../components/TaskList';
 import { logout } from '../helpers/session';
-import { invalidateTaskList, useTasksList } from '../api/APIHooks';
 
 export const Tasks = ({ navigation }) => {
     const dispatch = useDispatch();

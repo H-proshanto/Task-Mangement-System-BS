@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from '../config';
+import { BASE_URL } from '../../config';
 
 export const getAllMembers = async (params) => {
     const apiSubDirectory = 'members';
@@ -32,7 +32,6 @@ export const addNewMember = async (params) => {
     const apiSubDirectory = 'members';
     const apiDirectory = 'private';
     const url = `${BASE_URL}/${apiDirectory}/${apiSubDirectory}/`;
-    console.log(params);
     await axios({
         method: 'POST',
         url,

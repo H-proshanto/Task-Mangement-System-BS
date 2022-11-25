@@ -1,5 +1,5 @@
-import { addNewMember, updateMember } from '../api/memberAPI';
-import { addNewTask, updateTask } from '../api/taskAPI';
+import { addNewMember, updateMember } from '../api/model/memberAPI';
+import { addNewTask, updateTask } from '../api/model/taskAPI';
 
 export const onPressMemberForm = (view) => {
     if (view === 'create') {

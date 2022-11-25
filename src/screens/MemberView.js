@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonUI } from '../components/ButtonUI';
 import { TaskList } from '../components/TaskList';
 import { logout } from '../helpers/session';
-import { useMemberMutation, useTasksList } from '../api/APIHooks';
 import { memberTaskList } from '../helpers/utility';
+import { useTasksList } from '../api/hooks/taskHooks';
+import { useMemberMutation } from '../api/hooks/memberHooks';
 
 export const MemberView = ({ navigation, route }) => {
     const { memberName, memberId } = route.params;
     const token = useSelector((state) => state.user.token);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const taskList = useTasksList(token);
     const { mutate, status, error } = useMemberMutation(token, memberId);
 

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTaskMutation } from '../api/hooks/taskHooks';
 import { ButtonUI } from '../components/ButtonUI';
 import { logout } from '../helpers/session';
-import { useTaskMutation } from '../api/APIHooks';
 
 export const TaskView = ({ navigation, route }) => {
     const { title, description, todoId, memberName, memberId } = route.params;

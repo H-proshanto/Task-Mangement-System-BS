@@ -8,7 +8,7 @@ import { InputField } from '../components/InputField';
 import { logout } from '../helpers/session';
 import { validateMemberForm } from '../helpers/validation';
 import { useState } from 'react';
-import { useMemberFormMutation } from '../api/APIHooks';
+import { useMemberFormMutation } from '../api/hooks/memberHooks';
 
 export const MemberForm = ({ navigation, route }) => {
     const [memberName, setMemberName] = useState(route.params?.memberName);

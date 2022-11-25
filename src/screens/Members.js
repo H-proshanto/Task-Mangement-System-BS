@@ -3,7 +3,8 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { MemberList } from '../components/MemberList';
 import { logout } from '../helpers/session';
-import { invalidateMemberList, useMembersList, useTasksList } from '../api/APIHooks';
+import { useTasksList } from '../api/hooks/taskHooks';
+import { useMembersList } from '../api/hooks/memberHooks';
 
 export const Members = ({ navigation }) => {
     const dispatch = useDispatch();

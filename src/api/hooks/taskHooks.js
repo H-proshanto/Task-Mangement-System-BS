@@ -1,8 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { onPressTaskForm } from "../../helpers/MethodSelector";
-import { queryClient } from "../config";
-import { deleteTask, getAllTasks } from "../model/taskAPI";
-
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { onPressTaskForm } from '../../helpers/MethodSelector';
+import queryClient from '../config';
+import { deleteTask, getAllTasks } from '../model/taskAPI';
 
 export const useTasksList = (token) => {
     return useQuery({

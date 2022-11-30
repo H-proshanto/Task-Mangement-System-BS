@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { onPressMemberForm } from "../../helpers/MethodSelector";
-import { queryClient } from "../config";
-import { deleteMember, getAllMembers } from "../model/memberAPI";
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { onPressMemberForm } from '../../helpers/MethodSelector';
+import queryClient from '../config';
+import { deleteMember, getAllMembers } from '../model/memberAPI';
 
 export const useMembersList = (token, taskList) => {
     return useQuery({

@@ -45,7 +45,7 @@ export const TaskView = ({ navigation, route }) => {
                 routes: [{ name: 'DashBoard', params: { screen: 'Tasks' } }],
             });
         }
-    },);
+    });
 
     return (
         <View style={styles.container}>

@@ -1,3 +1,11 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient } from '@tanstack/react-query';
 
-export const queryClient = new QueryClient();
+const queryClient = new QueryClient();
+
+if (__DEV__) {
+    import('react-query-native-devtools').then(({ addPlugin }) => {
+        addPlugin({ queryClient });
+    });
+}
+
+export default queryClient;
